@@ -1,0 +1,8 @@
+# Operating System files
+Target/
+**.DS_Store
+Thumbs.db
+desktop.ini
+
+# PICO-8 backups
+*.bak
