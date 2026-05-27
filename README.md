@@ -15,3 +15,7 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.1.0] - *2026-05-26*
+- **Added:** Initial repository architecture, and .p8 code structure/organizatiom.
+- **Added:** Basic global palette swap loops (`apply_global_pal()`).
+- **Added:** Early 16x24px idle player sprite.
