@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+
+### [v0.2.0] - *2026-05-26*
+- **Added:** Core architectural functions `_init()`, `_update60()`, and `_draw()`.
+- **Added:** Clock functions recording ticks.
+- **Added:** Character tables for the player and enemies: `plr={}` and `en={}`
+- **Added:** Independent draw functions `draw_player()` and `draw_enemies()` using data directly from character tables.
+
 ### [v0.1.0] - *2026-05-26*
 - **Added:** Initial repository architecture, and .p8 code structure/organizatiom.
 - **Added:** Basic global palette swap loops (`apply_global_pal()`).
