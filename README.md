@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.3.0] - *2026-05-29*
+- **Added:** Draw function `draw_obj()` using new object property `fx` (Horizontal Flip).
+- **Added:** Movement function `move_obj()` using new object property `spd`.
+- **Added:** Movement logic for player and enemy in their respective `update()` functions.
+- **Changed:** Organized tables for better visibility.
 
 ### [v0.2.0] - *2026-05-26*
 - **Added:** Core architectural functions `_init()`, `_update60()`, and `_draw()`.
