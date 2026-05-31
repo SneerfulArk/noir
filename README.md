@@ -15,6 +15,14 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.4.0] - *2026-05-30*
+- **Added:** Combat functions `init_combat()` and `update_combat()`.
+- **Added:** SFX slot 0 for player melee attack sound effect.
+- **Added:** `hitstop` cooldown timer for player attack input.
+- **Added:** `doshake()` (camera shake) function and its companion variable `shake` for player attacks.
+- **Added:** `plr.facing` variable to dictate player horizontal sprite flip, and to prepare for future combat logic.
+- **Changed:** `--#region` section and subsequent code-block indentation for better readability in VS Code.
+
 ### [v0.3.0] - *2026-05-29*
 - **Added:** Draw function `draw_obj()` using new object property `fx` (Horizontal Flip).
 - **Added:** Movement function `move_obj()` using new object property `spd`.
