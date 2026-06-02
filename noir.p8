@@ -5,11 +5,14 @@ __lua__
 --#region 1. MAIN
 
     --palette
-    pal_global={
+    pal_global = {
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
         {4,  133}, --Brown     to  Choc-Brown
     }
+
+    --enemy animations
+    walk = {12,2,14,2}
 
     function _init()
         init_clock()
@@ -102,19 +105,12 @@ __lua__
 --#region 4. ENEMIES
 
     function init_enemies()
-        en={
-            x   = 74,
-            y   = 64,
-            w   = 2,
-            h   = 3,
-            spr = 2,
-            spd = 1,
-            fx  = true
-        }
+        en = make_obj(74,64,2,3)
     end
 
     function update_enemies()
         move_obj(en)
+        animate(en)
         if (en.x+16) >= 115 then
             en.spd    = -1
             en.fx     = false
@@ -145,7 +141,7 @@ __lua__
         if shake>=1 then shake-=1 end
 
         if en.x <= (plr.x+20) and en.x >= (plr.x-10) then
-            if btn(4) and hitstop<=0 then
+            if btn(5) and hitstop<=0 then
                 hitstop = 15
                 shake = 3
                 sfx(0)
@@ -174,8 +170,33 @@ __lua__
         end
     end
 
+    function make_obj(obj_x,obj_y,obj_w,obj_h)
+        local obj={}
+            --general properties
+            obj.x      = obj_x
+            obj.y      = obj_y
+            obj.w      = obj_w or 2
+            obj.h      = obj_h or 3
+            obj.spd    = 1
+            --sprite/animation
+            obj.ani    = walk
+            obj.frame  = 1
+            obj.anispd = 0.2
+            obj.fx     = true
+            obj.spr    = 2
+        return obj
+    end
+
     function move_obj(obj)
         obj.x+=obj.spd
+    end
+
+    function animate(obj)
+        obj.frame += obj.anispd
+        if flr(obj.frame) > #obj.ani then
+            obj.frame=1
+        end
+        obj.spr=obj.ani[flr(obj.frame)]
     end
 
     function draw_obj(obj)
