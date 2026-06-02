@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.5.0] - *2026-06-1*
+- **Added:** Factory `make_obj()` function to create object (mainly enemies) tables.
+- **Added:** `animate()` function using new `ani`, `anispd`, and `frame` object animation variables.
+- **Added:** Global `walk` table containing early enemy walking animation frames.
+
 ### [v0.4.0] - *2026-05-30*
 - **Added:** Combat functions `init_combat()` and `update_combat()`.
 - **Added:** SFX slot 0 for player melee attack sound effect.
