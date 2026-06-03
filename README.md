@@ -15,7 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
-### [v0.5.0] - *2026-06-1*
+### [v0.6.0] - *2026-06-03*
+- **Added:** Clock variable `gt` (game-time) injected into `animate()` and `move()` math to control overall game speed.
+- **Added:** Early time-slow/halt mechanic when enemies get within a certain threshold around the players x-axis.
+- **Added:** Clock variable `time_elapsed` which records the total game-time ticks (separate from the `ticks` variable, which is not affected by game time).
+
+### [v0.5.0] - *2026-06-01*
 - **Added:** Factory `make_obj()` function to create object (mainly enemies) tables.
 - **Added:** `animate()` function using new `ani`, `anispd`, and `frame` object animation variables.
 - **Added:** Global `walk` table containing early enemy walking animation frames.
