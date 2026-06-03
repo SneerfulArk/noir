@@ -45,6 +45,7 @@ __lua__
 
         --debug
         print(ticks, 1, 1, 6)
+        print(flr(time_elapsed), 1, 8, 6)
         cprint("NOIR", 63, 20, 6)
         
         --[[line(63,0,63,127,12) --vertical debug line
@@ -59,10 +60,20 @@ __lua__
 
     function init_clock()
         ticks = 0
+        gt    = 1 or 1
+        time_elapsed = 0
     end
 
     function update_clock()
         ticks += 1
+        time_elapsed += (1*gt)
+
+        --time slow
+        if en.x < (plr.x+38) and en.x > (plr.x-55) then
+            gt -= 0.02
+            if gt<= 0.2 then gt = 0 end
+        else gt = 1
+        end
     end
 
 
@@ -105,19 +116,19 @@ __lua__
 --#region 4. ENEMIES
 
     function init_enemies()
-        en = make_obj(74,64,2,3)
+        en = make_obj(100,64,2,3)
     end
 
     function update_enemies()
         move_obj(en)
         animate(en)
-        if (en.x+16) >= 115 then
-            en.spd    = -1
-            en.fx     = false
-        end
         if en.x<=15 then
             en.spd    = 1
             en.fx     = true
+        end
+        if (en.x+16) >= 115 then
+            en.spd    = -1
+            en.fx     = false
         end
     end
 
@@ -188,11 +199,11 @@ __lua__
     end
 
     function move_obj(obj)
-        obj.x+=obj.spd
+        obj.x+=(obj.spd*gt)
     end
 
     function animate(obj)
-        obj.frame += obj.anispd
+        obj.frame += (obj.anispd*gt)
         if flr(obj.frame) > #obj.ani then
             obj.frame=1
         end
