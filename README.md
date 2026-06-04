@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.7.0] - *2026-06-03*
+- **Added:** Simple loop for drawing ground texture lines behind entities.
+- **Added:** New palette swaps in the `pal_global` table, and reworked spritesheet with new palette.
+- **Changed:** Time-Slow/Halt logic now multiplies `gt` by 0.9655 every frame instead of incrementing by a fixed number.
+- **Fixed:** Was unable to change enemies speed easily with `obj.spd` because of the direction logic constantly updating it. Solved by adding a `dx` (x-axis direction) variable to decide dirction, while `spd` is used purely for movement speed now.
+
 ### [v0.6.0] - *2026-06-03*
 - **Added:** Clock variable `gt` (game-time) injected into `animate()` and `move()` math to control overall game speed.
 - **Added:** Early time-slow/halt mechanic when enemies get within a certain threshold around the players x-axis.
