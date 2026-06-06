@@ -15,6 +15,10 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.8.0] - *2026-06-05*
+- **Added:** Early `rain` table, update, and draw logic under VFX section. Rain currently reacts to game-time.
+- **Added:** Extra time logic in `animate()` function to prepare for possible reverse-time features.
+
 ### [v0.7.0] - *2026-06-03*
 - **Added:** Simple loop for drawing ground texture lines behind entities.
 - **Added:** New palette swaps in the `pal_global` table, and reworked spritesheet with new palette.
