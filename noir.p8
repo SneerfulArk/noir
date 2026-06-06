@@ -22,6 +22,7 @@ __lua__
         init_player()
         init_combat()
         init_enemies()
+        init_vfx()
         init_testing()
     end
 
@@ -31,6 +32,7 @@ __lua__
         update_player()
         update_combat()
         update_enemies()
+        update_vfx()
         update_testing()
     end
 
@@ -50,6 +52,7 @@ __lua__
 
         draw_player()
         draw_enemies()
+        draw_vfx()
         draw_testing()
 
         --debug
@@ -173,7 +176,33 @@ __lua__
 
 --#region 6. VFX
 
+    function init_vfx()
+        rain = {}
+        for r=1,8 do
+            for i=1, 64 do
+                local drop = {
+                    x = -64+i*4+(4*r),
+                    y = -40+(19*r)+flr(rnd(4)+1),
+                    w = 6,
+                    h = flr(16+(rnd(4)+1))
+                }
+                add(rain, drop)
+            end
+        end
+    end
 
+    function update_vfx()
+        for drop in all (rain) do
+            drop.x += 0.4*gt
+            drop.y += 1.8*gt
+        end
+    end
+
+    function draw_vfx()
+        for drop in all (rain) do
+            line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),12)
+        end
+    end
 
 
 --#region 7. UTILITIES
@@ -216,6 +245,9 @@ __lua__
         obj.frame += (obj.anispd*gt)
         if flr(obj.frame) > #obj.ani then
             obj.frame=1
+        end
+        if flr(obj.frame) <= 0 then --for possible reverse time
+            obj.frame=#obj.ani
         end
         obj.spr=obj.ani[flr(obj.frame)]
     end
