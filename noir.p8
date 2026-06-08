@@ -55,6 +55,8 @@ __lua__
         draw_vfx()
         draw_testing()
 
+        camera()
+
         --debug
         print(ticks, 1, 1, 6)
         print(flr(time_elapsed), 1, 8, 6)
@@ -72,7 +74,8 @@ __lua__
 
     function init_clock()
         ticks = 0
-        gt    = 1 or 1
+        gt    = 1
+        time_slow = true
         time_elapsed = 0
     end
 
@@ -81,7 +84,14 @@ __lua__
         time_elapsed += (1*gt)
 
         --time slow
-        if en.x < (plr.x+38) and en.x > (plr.x-55) then
+        if btnp(4) then
+            if time_slow == false then
+                time_slow = true
+            elseif time_slow == true then
+                time_slow = false
+            end
+        end
+        if time_slow==true and en.x < (plr.x+38) and en.x > (plr.x-55) then
             gt *= 0.9655
             if gt<= 0.15 then gt = 0 end
         else gt = 1
@@ -177,30 +187,42 @@ __lua__
 --#region 6. VFX
 
     function init_vfx()
-        rain = {}
-        for r=1,8 do
-            for i=1, 64 do
+        rain = {}  
+        for r=1,8 do --rows
+            local row = {
+                drops = {}
+            }
+            for d=1, 64 do --drops
                 local drop = {
-                    x = -64+i*4+(4*r),
-                    y = -40+(19*r)+flr(rnd(4)+1),
+                    x = -64+d*4+(4*r),
+                    y = -55+(19*r)+flr(rnd(4)+1),
                     w = 6,
                     h = flr(16+(rnd(4)+1))
                 }
-                add(rain, drop)
+                add(row.drops, drop)
             end
+            add(rain, row)
         end
     end
 
     function update_vfx()
-        for drop in all (rain) do
-            drop.x += 0.4*gt
-            drop.y += 1.8*gt
+        for row in all (rain) do
+            for drop in all (row.drops) do
+                drop.x += 0.4*gt
+                drop.y += 1.8*gt
+                if drop.y >= 136 then
+                    drop.y = drop.y-152
+                    drop.x = drop.x-33.8
+                end
+            end
         end
     end
 
     function draw_vfx()
-        for drop in all (rain) do
-            line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),12)
+        for row in all (rain) do
+            for drop in all (row.drops) do
+                line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),12)
+            end
         end
     end
 
