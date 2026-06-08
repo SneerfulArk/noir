@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.9.0] - *2026-06-07*
+- **Added:** New `time_slow` variable and controls for future debugging and testing.
+- **Added:** Reposition logic for raindrops falling below the screen, resulting in an infinite rain loop.
+- **Changed:** `init_vfx()` and `update_vfx` to use a nested loop of rows and columns for the rain table.
+
 ### [v0.8.0] - *2026-06-05*
 - **Added:** Early `rain` table, update, and draw logic under VFX section. Rain currently reacts to game-time.
 - **Added:** Extra time logic in `animate()` function to prepare for possible reverse-time features.
