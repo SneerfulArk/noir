@@ -15,6 +15,17 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.10.0] - *2026-06-10*
+#### Added
+- **Distance:** Simplified all player-enemy distance checks with a new `distance` variable calculated with the `abs()` function using the player and enemies new `cent` (center) variable.
+- **Clock:** New `slow_dist`, `stop_dist`, and `slow_spd` variables for simpler time-slow/time-stop tweaking.
+- **Sprites:** Drew the first dual-character 4x6-tile takedown frame.
+#### Changed
+- **Sprites:** Flipped all standalone sprites to face to the right and modified code accordingly.
+- **Debug:** Updated debug overlay with labels for readability.
+#### Fixed
+- **Draw:** Player and enemy sprites used to be off by one pixel when flipped. Fixed by adding a local offset variable to the `draw_obj()` function, which decides the offset based on the objects `facing` variable.
+
 ### [v0.9.1] - *2026-06-08*
 #### Changed
 - **Time-slow:** Tweaked game-time deceleration multiplier and snap threshold to make time-slow feel more cinematic.
