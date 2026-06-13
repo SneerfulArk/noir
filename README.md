@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.11.0] - *2026-06-12*
+#### Added
+- **State:** New `game` variable controlling game states like "menu" and "play".
+- **State:** Unused testing section replaced with state section to organize game state functions.
+- **Clock:** New `return_spd` variable and logic to smoothly transition back to full game speed.
+- **Debug:** `draw()` function debug overlay now shows the `gt` variable.
+
 ### [v0.10.0] - *2026-06-10*
 #### Added
 - **Distance:** Simplified all player-enemy distance checks with a new `distance` variable calculated with the `abs()` function using the player and enemies new `cent` (center) variable.
@@ -51,7 +58,7 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 #### Changed
 - Time-Slow/Halt logic now multiplies `gt` by 0.9655 every frame instead of incrementing by a fixed number.
 #### Fixed
-- Was unable to change enemies speed easily with `obj.spd` because of the direction logic constantly updating it. Solved by adding a `dx` (x-axis direction) variable to decide dirction, while `spd` is used purely for movement speed now.
+- Was unable to change enemies speed easily with `obj.spd` because of the direction logic constantly updating it. Solved by adding a `dx` (x-axis direction) variable to decide direction, while `spd` is used purely for movement speed now.
 
 ### [v0.6.0] - *2026-06-03*
 #### Added
