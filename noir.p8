@@ -18,21 +18,23 @@ __lua__
     walk = {4,2,6,2}
     
     function _init()
+        game = "play"
         init_clock()
         init_player()
         init_enemies()
         init_combat()
         init_vfx()
-        init_testing()
     end
 
     function _update60()
-        update_clock()
-        update_player()
-        update_enemies()
-        update_combat()
-        update_vfx()
-        update_testing()
+        ticks += 1
+
+        --state
+        if game == "menu" then
+            update_menu()
+        elseif game == "play" then
+            update_play()
+        end
     end
 
     function _draw()
@@ -41,24 +43,27 @@ __lua__
         cls(5)
         doshake()
         apply_global_pal()
-
+        
         --ground
         rectfill(-1,109,128,128,5)
         for i=1,12 do
             line(-1,(107+2*i),128,(107+2*i),0)
         end
 
-        draw_player()
-        draw_enemies()
-        draw_vfx()
-        draw_testing()
+        --state
+        if game == "menu" then
+            draw_menu()
+        elseif game == "play" then
+            draw_play()
+        end
 
         camera()
 
         --debug
         print("ticks:"..ticks, 1, 1, 6)
         print("time_elapsed:"..flr(time_elapsed), 1, 8, 6)
-        print("distance:"..distance, 1, 15, 6)
+        print("gt:"..gt, 1, 15, 6)
+        print("distance:"..distance, 1, 22, 6)
         cprint("NOIR", 120, 0, 6)
         
         --[[line(63,0,63,127,12) --vertical debug line
@@ -73,16 +78,16 @@ __lua__
 
     function init_clock()
         ticks = 0
-        gt    = 1
+        gt    = 0
         time_slow = true
         time_elapsed = 0
         slow_dist = 40
         stop_dist = 12
         slow_spd = 0.968
+        return_spd = 1.045
     end
 
     function update_clock()
-        ticks += 1
         time_elapsed += (1*gt)
 
         --time slow
@@ -95,8 +100,18 @@ __lua__
         end
         if time_slow==true and distance<=slow_dist then
             gt *= slow_spd
-            if distance<=stop_dist then gt = 0 end
-        else gt = 1
+            if distance<=stop_dist then
+                 gt = 0 
+            end
+        elseif time_slow==false then
+            if gt <= 0.1 then
+                gt = 0.1
+            end
+            if gt <= 0.99 then
+                gt *= return_spd
+            else
+                gt = 1
+            end
         end
     end
 
@@ -230,6 +245,7 @@ __lua__
     end
 
     function draw_vfx()
+        --rain
         for row in all (rain) do
             for drop in all (row.drops) do
                 line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),12)
@@ -315,18 +331,31 @@ __lua__
     end
 
 
---#region 8. TESTING
+--#region 8. STATE
 
-    function init_testing()
-
+    --menu state
+    function update_menu()
+        update_vfx()
+        if btn(4) then game = "play" end
     end
 
-    function update_testing()
-
+    function draw_menu()
+        draw_vfx()
     end
 
-    function draw_testing()
+    --play state
+    function update_play()
+        update_clock()
+        update_player()
+        update_enemies()
+        update_combat()
+        update_vfx()
+    end
 
+    function draw_play()
+        draw_player()
+        draw_enemies()
+        draw_vfx()
     end
 
 
