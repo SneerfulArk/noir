@@ -15,6 +15,15 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.12.0] - *2026-06-13*
+#### Added
+- **Animation:** Early architectural setup for the combat animations via the `takedown_anims` table, located near the top of the `init_combat` function. Opted for a table oriented combat state machine for scalability over messy if/then conditions.
+- **Animation:** 2-frame enemy punch animation to transition between walk and dual-character combat animations, and `punch_dist` variable for easier tweaking of said animation.
+- **Animation:** 3-frame dual-character combat/takedown animation added to spritesheet.
+- **State:** `state` variable added to player and enemy tables.
+#### Changed
+- **Effect:** `hitstop` variable renamed to `hit_cool`, because `hitstop` will be used for a freeze-frame effect going ahead rather than a cooldown-timer.
+
 ### [v0.11.0] - *2026-06-12*
 #### Added
 - **State:** New `game` variable controlling game states like "menu" and "play".
