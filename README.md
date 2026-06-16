@@ -15,6 +15,18 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.13.0] - *2026-06-15*
+#### Added
+- **Combat:** `cframe` variable to track current frame in takedown sequences. Used in the new `takedown()` function.
+- **Combat:** Early `takedown()` function utilizing the `leg_shot` sequence within the `takedowns` table. Draws specified sprites and triggers effects like screen-shake upon the specified combat-frame.
+- **Enemy:** New `"dead"` enemy state and logic to stop movement and drawing of enemy once combat starts. The enemy is drawn as part of the players 4x3-tile dual-character sprite during combat.
+- **Draw:** New offset logic in `draw_obj()` function to support flipped 4x3-tile combat sprites.
+#### Changed
+- **Naming:** Renamed `takedown_anims` table to `takedowns` since the table contains more data than just the animation sprites.
+- **Sprites:** Edited combat animation sprites limb positioning and added blood.
+#### Removed
+- **Combat:** Removed `hit_cool` (hit-cooldown), which wont be used in new combat system.
+
 ### [v0.12.0] - *2026-06-13*
 #### Added
 - **Animation:** Early architectural setup for the combat animations via the `takedown_anims` table, located near the top of the `init_combat` function. Opted for a table oriented combat state machine for scalability over messy if/then conditions.
