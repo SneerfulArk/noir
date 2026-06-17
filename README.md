@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.13.1] - *2026-06-17*
+#### Added
+- **Clock:** `full_spd` dev variable plugged into clock logic for easier testing of time-slow mechanics.
+#### Fixed
+- **Draw:** Player sprite was being drawn with flipped 4x3 tile offset too early, causing a slight flicker upon entering combat from the flipped side (left). Fixed by changing the offset condition to be the `cframe` variable rather than the `"combat"` player state.
+
 ### [v0.13.0] - *2026-06-15*
 #### Added
 - **Combat:** `cframe` variable to track current frame in takedown sequences. Used in the new `takedown()` function.
