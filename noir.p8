@@ -83,6 +83,7 @@ __lua__
     function init_clock()
         ticks = 0
         gt    = 1
+        full_spd = 1
         time_slow = true
         time_elapsed = 0
         slow_dist = 40
@@ -108,13 +109,13 @@ __lua__
                  gt = 0 
             end
         elseif time_slow==false then
-            if gt <= 0.1 then
-                gt = 0.1
+            if gt <= full_spd/10 then
+                gt = full_spd/10
             end
-            if gt <= 0.99 then
+            if gt <= full_spd-0.01 then
                 gt *= return_spd
             else
-                gt = 1
+                gt = full_spd
             end
         end
     end
@@ -164,7 +165,7 @@ __lua__
 --#region 4. ENEMIES
 
     function init_enemies()
-        en = make_obj(115,90,2,3,1,0.2)
+        en = make_obj(110,90,2,3,1,0.2)
     end
 
     function update_enemies()
@@ -247,12 +248,12 @@ __lua__
 
     function takedown()
         local c = flr(cframe) --current combat frame
-        local kf = takedowns.leg_shot.key_frames[c] --takedown data index
+        local kf = takedowns.leg_shot.key_frames[c] --keyframe table
 
         if kf != nil then
-            plr.spr = kf.spr
             plr.w = 4
             plr.h = 3
+            plr.spr = kf.spr
             shake = kf.shake
         end
         if cframe >= 1 then
@@ -357,7 +358,7 @@ __lua__
     function draw_obj(obj)
         local offset = 0
         if obj.facing == 0 then
-            if obj.state == "combat" then
+            if cframe >= 1 then
                 offset = 17
             else
                 offset = 1
