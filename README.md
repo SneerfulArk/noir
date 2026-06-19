@@ -15,6 +15,16 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.14.0] - *2026-06-18*
+#### Added
+- **VFX:** `muzflash()` (muzzle flash) function dictated by keyframes from the `takedowns` table using the variables `muzzle` to calculate size & lifespan, and `muz_x`, `muz_y` `muz_offsetx`, and `muz_offsety` to calculate position.
+- **Sound:** Gunshot sound effects also dictated by specific keyframes from the `takedowns` table.
+- **Sound:** Looping ambient rain sound effect.
+#### Changed
+- **Colour:** `pal_global` now includes new colour swaps. A lighter yellow for the muzzle flash, and two reds for the blood.
+- **Sprite:** Blood redone on dual-character takedown sprites.
+- **Organization:** Keyframes table organized into rows for readability.
+
 ### [v0.13.1] - *2026-06-17*
 #### Added
 - **Clock:** `full_spd` dev variable plugged into clock logic for easier testing of time-slow mechanics.
