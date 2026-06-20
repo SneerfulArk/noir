@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.15.0] - *2026-06-19*
+#### Added
+- **Effect:** Palette swap flash effect added to takedown keyframes. Implemented similarly to previous takedown effects like screen-shake and muzzle-flash.
+#### Changed
+- **Palette:** Refactored `pal_global` into nested-tables and edited the `apply_global_pal()` function to support both the `main` palette, and the new `flash` palette.
+- **Palette:** `main` palette optimized alongside new `flash` palette. Most notably the rain colour is darker now.
+
 ### [v0.14.0] - *2026-06-18*
 #### Added
 - **VFX:** `muzflash()` (muzzle flash) function dictated by keyframes from the `takedowns` table using the variables `muzzle` to calculate size & lifespan, and `muz_x`, `muz_y` `muz_offsetx`, and `muz_offsety` to calculate position.
