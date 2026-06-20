@@ -6,15 +6,23 @@ __lua__
 
     --palette
     pal_global = {
-        {12, 1},   --Ocean     to  Cobalt
+        main = {
+        {0,  0},   --Black     to  Black
         {1,  129}, --Cobalt    to  Dark-Blue
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
         {4,  133}, --Brown     to  Choc-Brown
-        {9,  132}, --Orange    to  Diff-Brown
         {10, 135}, --Yellow    to  Light-yellow
         {14, 136}, --Pink      to  Blood-Red
         {8,  2},   --Red       to  Dark-Red
+        },
+        flash = {
+        {0,  5},   --Black     to  Dark-Grey
+        {1,  1},   --Cobalt    to  Dark-Blue
+        {2,  133}, --Bergundy  to  Choc-Brown
+        {15, 7},   --Beige     to  White
+        {4,  132}, --Brown     to  Brown
+        },
     }
 
     --enemy animations
@@ -23,7 +31,7 @@ __lua__
     
     function _init()
         game = "play"
-        sfx(3)
+        --sfx(3)
         init_clock()
         init_player()
         init_enemies()
@@ -205,6 +213,7 @@ __lua__
         muzzle=0
         muz_x=0
         muz_y=0
+        flash=0
         punch_dist=24
         counter=false
         cframe=0
@@ -218,10 +227,11 @@ __lua__
                     [15] = {
                         spr=64,
                         shake=12,
-                        muzzle=2,
+                        muzzle=3,
                         muz_offsetx=7,
                         muz_offsety=15,
                         sfx=1,
+                        flash=4,
                     },
                     [24] = {
                         spr=68,
@@ -229,10 +239,11 @@ __lua__
                     [67] = {
                         spr=68,
                         shake=13,
-                        muzzle=2,
+                        muzzle=3,
                         muz_offsetx=7,
                         muz_offsety=9,
                         sfx=2,
+                        flash=4,
                     },
                     [73] = {
                         spr=72,
@@ -247,8 +258,9 @@ __lua__
         distance=abs(flr(plr.cent)-flr(en.cent))
 
         --effects
-        if shake>=1 then shake-=gt end
-        if muzzle>= 1 then muzzle-=(gt/2) end
+        if shake>=1 then shake -= gt end
+        if muzzle>= 1 then muzzle -= (gt/2) end
+        if flash >= 1 then flash -= 1 end
 
         --enemy punch
         if distance==punch_dist then
@@ -297,6 +309,9 @@ __lua__
             if kf.sfx != nil then
                 sfx(kf.sfx)
             end
+            if kf.flash != nil then
+                flash = kf.flash
+            end
         end
         if cframe >= 1 then
             en.state = "dead"
@@ -325,6 +340,7 @@ __lua__
     end
 
     function update_vfx()
+        --rain
         for row in all (rain) do
             for drop in all (row.drops) do
                 drop.x += 0.4*gt
@@ -345,7 +361,7 @@ __lua__
         --rain
         for row in all (rain) do
             for drop in all (row.drops) do
-                line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),12)
+                line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),1)
             end
         end
     end
@@ -360,7 +376,13 @@ __lua__
     function apply_global_pal()
         palt(0,false)
         palt(3,true)
-        for clr in all(pal_global) do
+        local palette = pal_global.main
+        if flash >=1 then
+            palette = pal_global.flash
+        else
+            palette = pal_global.main
+        end
+        for clr in all(palette) do
             pal(clr[1], clr[2], 1)
         end
     end
