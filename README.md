@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.16.0] - *2026-06-21*
+#### Added
+- **Effect:** `rstop` (rainstop) effect added to takedown sequences similarly to previous effects. This allows more visual impact for melee combat frames.
+#### Changed
+- **Rain:** Rain movement logic changed to use `rt` (rain-time) instead of `gt` so that the new rainstop effect wont impede on other systems.
+
 ### [v0.15.0] - *2026-06-19*
 #### Added
 - **Effect:** Palette swap flash effect added to takedown keyframes. Implemented similarly to previous takedown effects like screen-shake and muzzle-flash.
