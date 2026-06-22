@@ -101,7 +101,7 @@ __lua__
         slow_dist = 40
         stop_dist = 12
         slow_spd = 0.968
-        return_spd = 1.045
+        return_spd = 1.080
     end
 
     function update_clock()
@@ -118,7 +118,7 @@ __lua__
         if time_slow==true and distance<=slow_dist then
             gt *= slow_spd
             if distance<=stop_dist then
-                 gt = 0 
+                gt = 0 
             end
         elseif time_slow==false then
             if gt <= full_spd/10 then
@@ -214,6 +214,7 @@ __lua__
         muz_x=0
         muz_y=0
         flash=0
+        rainstop=0
         punch_dist=24
         counter=false
         cframe=0
@@ -223,8 +224,10 @@ __lua__
                 key_frames={
                     [01] = {
                         spr=64,
+                        sfx=0,
+                        rstop=6,
                     },
-                    [15] = {
+                    [17] = {
                         spr=64,
                         shake=12,
                         muzzle=3,
@@ -233,10 +236,10 @@ __lua__
                         sfx=1,
                         flash=4,
                     },
-                    [24] = {
+                    [26] = {
                         spr=68,
                     },
-                    [67] = {
+                    [69] = {
                         spr=68,
                         shake=13,
                         muzzle=3,
@@ -245,7 +248,7 @@ __lua__
                         sfx=2,
                         flash=4,
                     },
-                    [73] = {
+                    [75] = {
                         spr=72,
                     },
                 }
@@ -261,6 +264,7 @@ __lua__
         if shake>=1 then shake -= gt end
         if muzzle>= 1 then muzzle -= (gt/2) end
         if flash >= 1 then flash -= 1 end
+        if rainstop >=1 then rainstop -= 1 end
 
         --enemy punch
         if distance==punch_dist then
@@ -294,6 +298,7 @@ __lua__
             plr.w = 4
             plr.h = 3
             plr.spr = kf.spr
+            
             if kf.shake != nil then
                 shake = kf.shake
             end
@@ -312,6 +317,10 @@ __lua__
             if kf.flash != nil then
                 flash = kf.flash
             end
+            if kf.rstop != nil then
+                rainstop = kf.rstop
+            end
+
         end
         if cframe >= 1 then
             en.state = "dead"
@@ -322,6 +331,7 @@ __lua__
 
     function init_vfx()
         rain = {}  
+        rt = gt --rain time
         for r=1,8 do --rows
             local row = {
                 drops = {}
@@ -341,10 +351,15 @@ __lua__
 
     function update_vfx()
         --rain
+        if rainstop >=1 then
+            rt = 0
+        else
+            rt = gt
+        end
         for row in all (rain) do
             for drop in all (row.drops) do
-                drop.x += 0.4*gt
-                drop.y += 1.8*gt
+                drop.x += 0.4*rt
+                drop.y += 1.8*rt
                 if drop.y >= 136 then
                     drop.y = drop.y-152
                     drop.x = drop.x-33.8
@@ -577,7 +592,7 @@ __gfx__
 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 __sfx__
-900200002965209632056220f600006150a600076000360000600006000c6000c6000060003600006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+d00300002962229612096120961005615046100761003610036100061000600006000060000600006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 59020000164731767011473084731767015665126650e6550c6550964506645036350163500625006250061500605006050060500605006050000500001000011700100001000000000000000000000000000000
 55020000164731767011473084731767015665126650e6550c6550964506645036350163500625006250061500605006050060500605006050000500001000011700100001000000000000000000000000000000
 040300200a6100a6100c6100c6100c6100a6100a6100c6100c6100c6100c6100c6100c6100a6100a6100a6100a6100c6100c6100c6100c6100a6100a6100a6100a6100a6100a6100c6100c6100c6100c6100a610
