@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.16.1] - *2026-06-22*
+#### Changed
+- **Draw:** `draw_obj()` function refactored to support sprite widths of both 3 tiles and 4 tiles.
+- **Sprites:** Reorganized spritesheet to save space after adding support for 3-tile sprites.
+
 ### [v0.16.0] - *2026-06-21*
 #### Added
 - **Effect:** `rstop` (rainstop) effect added to takedown sequences similarly to previous effects. This allows more visual impact for melee combat frames.
