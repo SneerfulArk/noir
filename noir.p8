@@ -218,6 +218,13 @@ __lua__
         punch_dist=24
         counter=false
         cframe=0
+        last_takedown=nil
+        current_takedown=nil
+
+        takedown_pool={
+            "leg_shot",
+            "test",
+        }
 
         takedowns={
             leg_shot={
@@ -257,6 +264,14 @@ __lua__
                         sprw=4,
                     },
                 }
+            },
+            test={
+                key_frames={
+                    [01] = {
+                        spr=54,
+                        sprw=4,
+                    },
+                }
             }
         }
     end
@@ -266,10 +281,10 @@ __lua__
         distance=abs(flr(plr.cent)-flr(en.cent))
 
         --effects
-        if shake>=1 then shake -= gt end
-        if muzzle>= 1 then muzzle -= (gt/2) end
+        if shake >= 1 then shake -= gt end
+        if muzzle >= 1 then muzzle -= (gt/2) end
         if flash >= 1 then flash -= 1 end
-        if rainstop >=1 then rainstop -= 1 end
+        if rainstop >= 1 then rainstop -= 1 end
 
         --enemy punch
         if distance==punch_dist then
@@ -284,6 +299,14 @@ __lua__
             counter = true
         end
         if distance == 11 and counter == true and plr.state != "combat" then
+            local rnd_index
+            
+            repeat rnd_index = takedown_pool[flr(rnd(#takedown_pool)+1)]
+            until rnd_index != last_takedown
+            
+            current_takedown = rnd_index
+            last_takedown = current_takedown
+            
             plr.state = "combat"
         end
         if plr.state == "combat" then
@@ -297,7 +320,8 @@ __lua__
 
     function takedown()
         local c = flr(cframe) --current combat frame
-        local kf = takedowns.leg_shot.key_frames[c] --keyframe table
+        local sequence = takedowns[current_takedown]
+        local kf = sequence.key_frames[c] --keyframe table
 
         if kf != nil then
             plr.h = 3
