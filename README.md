@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.17.0] - *2026-06-23*
+#### Added
+- **Combat:** Randomized selection of takedown sequences using the new `takedown_pool` table.
+- **Combat:** Logic to prevent the same takedown sequence from being selected twice in a row.
+#### Changed
+- **Architecture:** Refactored `takedown()` sequence key selection to support the new randomized takedown system.
+
 ### [v0.16.1] - *2026-06-22*
 #### Changed
 - **Draw:** `draw_obj()` function refactored to support sprite widths of both 3 tiles and 4 tiles.
