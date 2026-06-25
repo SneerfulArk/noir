@@ -15,6 +15,10 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.18.0] - *2026-06-24*
+#### Added
+- **Combat:** New combat sequence `double_chest`, fully animated and added to the `takedowns` table.
+
 ### [v0.17.0] - *2026-06-23*
 #### Added
 - **Combat:** Randomized selection of takedown sequences using the new `takedown_pool` table.
