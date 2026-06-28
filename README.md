@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.19.1] - *2026-06-27*
+#### Changed:
+**Color:** Palette tweaks to contribute to the dark atmosphere and make flash lighting more consistent.
+**Takedowns:** Added rainstop effect to more takedown frames.
+
 ### [v0.19.0] - *2026-06-26*
 #### Changed:
 - **Enemies:** Refactored many systems to stop relying on a hardcoded enemy. They now have guards in place to stop crashes when no enemy exists.
