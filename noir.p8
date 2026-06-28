@@ -8,20 +8,21 @@ __lua__
     pal_global = {
         main = {
         {0,  0},   --Black     to  Black
-        {1,  129}, --Cobalt    to  Dark-Blue
+        {1,  0}, --Cobalt    to  Dark-Blue
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
         {4,  133}, --Brown     to  Choc-Brown
         {10, 135}, --Yellow    to  Light-yellow
         {14, 136}, --Pink      to  Blood-Red
         {8,  2},   --Red       to  Dark-Red
+        {11,  0},   --Red       to  Dark-Red
         },
         flash = {
         {0,  5},   --Black     to  Dark-Grey
-        {1,  1},   --Cobalt    to  Dark-Blue
-        {2,  133}, --Bergundy  to  Choc-Brown
+        {1,  129},   --Cobalt    to  Dark-Blue
+        {2,  132}, --Bergundy  to  Choc-Brown
         {15, 7},   --Beige     to  White
-        {4,  132}, --Brown     to  Brown
+        {4,  4}, --Brown     to  Brown
         },
     }
 
@@ -61,7 +62,7 @@ __lua__
         --ground
         rectfill(-1,109,128,128,5)
         for i=1,12 do
-            line(-1,(107+2*i),128,(107+2*i),0)
+            line(-1,(107+2*i),128,(107+2*i),11)
         end
 
         --state
@@ -246,6 +247,7 @@ __lua__
         takedown_pool={
             "parry_leg",
             "double_chest",
+            "test",
         }
 
         takedowns={
@@ -344,6 +346,62 @@ __lua__
                         muz_offsety=13,
                         sfx=2,
                         flash=4,
+                        rstop=6,
+                    },
+                }
+            },
+            test={
+                key_frames={
+                    [01] = {
+                        spr=96,
+                        sprw=3,
+                        sfx=0,
+                        rstop=6,
+                    },
+                    [17] = {
+                        spr=99,
+                        sprw=3,
+                    },
+                    [27] = {
+                        spr=102,
+                        sprw=3,
+                        shake=11,
+                        muzzle=3,
+                        muz_offsetx=2,
+                        muz_offsety=12,
+                        sfx=2,
+                        flash=4,
+                        rstop=6,
+                    },
+                    [43] = {
+                        spr=102,
+                        sprw=3,
+                        shake=11,
+                        muzzle=3,
+                        muz_offsetx=2,
+                        muz_offsety=12,
+                        sfx=1,
+                        flash=4,
+                        rstop=6,
+                    },
+                    [53] = {
+                        spr=105,
+                        sprw=3,
+                    },
+                    [59] = {
+                        spr=108,
+                        sprw=4,
+                    },
+                    [86] = {
+                        spr=108,
+                        sprw=4,
+                        shake=13,
+                        muzzle=3,
+                        muz_offsetx=8,
+                        muz_offsety=13,
+                        sfx=2,
+                        flash=4,
+                        rstop=6,
                     },
                 }
             }
