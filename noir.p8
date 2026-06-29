@@ -8,21 +8,21 @@ __lua__
     pal_global = {
         main = {
         {0,  0},   --Black     to  Black
-        {1,  0}, --Cobalt    to  Dark-Blue
+        {1,  0},   --Cobalt    to  Dark-Blue
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
         {4,  133}, --Brown     to  Choc-Brown
         {10, 135}, --Yellow    to  Light-yellow
         {14, 136}, --Pink      to  Blood-Red
         {8,  2},   --Red       to  Dark-Red
-        {11,  0},   --Red       to  Dark-Red
+        {11, 0},   --Red       to  Dark-Red
         },
         flash = {
         {0,  5},   --Black     to  Dark-Grey
-        {1,  129},   --Cobalt    to  Dark-Blue
+        {1,  129}, --Cobalt    to  Dark-Blue
         {2,  132}, --Bergundy  to  Choc-Brown
         {15, 7},   --Beige     to  White
-        {4,  4}, --Brown     to  Brown
+        {4,  4},   --Brown     to  Brown
         },
     }
 
@@ -80,7 +80,7 @@ __lua__
             print("time_elapsed:"..flr(time_elapsed), 1, 8, 6)
             print("gt:"..gt, 1, 15, 6)
             if target_en != nil then
-                print("distance:"..distance, 1, 22, 6)
+                print("distance:"..target_en.dist, 1, 22, 6)
             end
             cprint("NOIR", 120, 0, 6)
             if plr.state == "combat" then
@@ -122,9 +122,9 @@ __lua__
             end
         end
         if target_en != nil then
-            if time_slow==true and distance<=slow_dist then
+            if time_slow==true and target_en.dist<=slow_dist then
                 gt *= slow_spd
-                if distance<=stop_dist then
+                if target_en.dist<=stop_dist then
                     gt = 0 
                 end
             elseif time_slow==false then
@@ -170,9 +170,9 @@ __lua__
         end
 
         if target_en != nil then
-            if en.cent > plr.cent then
+            if target_en.cent > plr.cent then
                 plr.facing = 1
-            elseif en.cent < plr.cent then
+            elseif target_en.cent < plr.cent then
                 plr.facing = 0
             end
         end
@@ -180,6 +180,7 @@ __lua__
     end
 
     function draw_player()
+        reset_draw_pal()
         draw_obj(plr)
     end
 
@@ -194,35 +195,49 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(110,90,2,3,1,0.2)
+            en = make_en(108,90,2,3,1,0.2)
             add(enemies,en)
-            target_en = en
+            en = make_en(118,90,2,3,1,0.2)
+            add(enemies,en)
+            en = make_en(128,90,2,3,1,0.2)
+            add(enemies,en)
         end
 
-        if target_en != nil then
-            en.cent = en.x+7
-            if en.state == "dead" then
-                en.spd = 0
-            end
-            move_obj(en)
-            animate(en)
-            if en.cent <=14 then
-                en.facing = 1
-                en.dx    = 1
-                en.fx    = false
-            end
-            if en.cent >= 113 then
-                en.facing = 0
-                en.dx    = -1
-                en.fx    = true
+        if #enemies > 0 then
+            target_en = enemies[1]
+            for en in all(enemies) do
+                en.cent = en.x+7
+                en.dist = abs(flr(plr.cent)-flr(en.cent))
+                if en.state == "dead" then
+                    en.spd = 0
+                end
+                move_obj(en)
+                animate(en)
+                if en.cent <=14 then
+                    en.facing = 1
+                    en.dx    = 1
+                    en.fx    = false
+                end
+                if en.cent >= 113 then
+                    en.facing = 0
+                    en.dx    = -1
+                    en.fx    = true
+                end
             end
         end
     
     end
 
     function draw_enemies()
-        if target_en != nil then
-            draw_obj(en)
+        if #enemies > 0 then
+            for en in all(enemies) do
+                if en != target_en then
+                    pal(0,2)
+                elseif en == target_en then
+                    reset_draw_pal()
+                end
+                draw_obj(en)
+            end
         end
     end
 
@@ -231,7 +246,6 @@ __lua__
 
     function init_combat()
 
-        distance=nil
         shake=0
         muzzle=0
         muz_x=0
@@ -410,10 +424,6 @@ __lua__
 
     function update_combat()
 
-        if target_en != nil then
-            distance=abs(flr(plr.cent)-flr(en.cent))
-        end
-
         --effects
         if shake >= 1 then shake -= gt end
         if muzzle >= 1 then muzzle -= (gt/2) end
@@ -422,18 +432,18 @@ __lua__
 
         --enemy punch
         if target_en != nil then
-            if distance==punch_dist then
-                en.ani=punch
-                en.frame=1
-            elseif distance>punch_dist then
-                en.ani=walk
+            if target_en.dist == punch_dist then
+                target_en.ani = punch
+                target_en.frame = 1
+            elseif target_en.dist > punch_dist then
+                target_en.ani = walk
             end
 
             --player counter
             if btn(5) then
                 counter = true
             end
-            if distance == 11 and counter == true and plr.state != "combat" then
+            if target_en.dist == 11 and counter == true and plr.state != "combat" then
                 local rnd_index
                 
                 repeat rnd_index = takedown_pool[flr(rnd(#takedown_pool))+1]
@@ -492,7 +502,7 @@ __lua__
 
         end
         if cframe >= 1 then
-            en.state = "dead"
+            target_en.state = "dead"
         end
     end
 
@@ -571,6 +581,12 @@ __lua__
         end
     end
 
+    function reset_draw_pal()
+        for clr = 0,15 do
+            pal(clr, clr, 0)
+        end
+    end
+
     function make_en(en_x,en_y,en_w,en_h,en_spd,en_anispd)
         local en={}
             --general properties
@@ -583,6 +599,7 @@ __lua__
             en.facing = 0
             en.cent   = en_x+7
             en.state  = "approach"
+            en.dist   = nil
             --sprite/animation
             en.ani    = walk
             en.frame  = 1
@@ -755,7 +772,7 @@ __gfx__
 33333000003333300000333333330000033000003333333333330000022222222333333333330000033333333333333333333000003333333333333333333333
 33334000003333300000333333340000033000003333333333340000030000033333333333340000033333333333333333334000003333333333333333333333
 33333400003333300000333333334000043000003333333333334000040000033333333333334000033333333244242333333400003333333333333333333333
-3333444fff43332fff222333333444fff44fff2223333333333444fff400000233333333333444fff4333333222222243333444fff4333333333333333333333
+3333444fff43332fff222333333444fff42fff2223333333333444fff400000233333333333444fff4333333222222243333444fff4333333333333333333333
 33334444f0244040f22222333334444f0240f222223333333334444f0240f222223333333334444f024333333200022233334444f02333333333333333333333
 33334442f0444020222222333344442f0420f422223333333344442f0420f422223333333344442f044403333000000233334444404333333333333333333333
 3333444440443320222223333344444f0420f222223333333344444f0420f822223333333344444f044003333000002233334444444333333333333333333333
