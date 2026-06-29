@@ -15,13 +15,22 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.20.0] - *2026-06-28*
+#### Added
+- **Enemies:** The system now supports any number of enemies at once. If multiple enemies exist, new logic is in place to pick the first index in the `enemies` table to be the `target_en` for combat.
+- **Palette:** Experimented with draw palette and made all enemies aside from the target have a lighter skin tone. Planning to utilize the draw palette for a more dynamic flash effect later on.
+- **Palette:** New `reset_draw_pal()` function to simplify larger draw palette swaps in the future.
+#### Changed
+- **Enemies:** Many instances of `en` swapped to `target_en`. This allows combat to be initiated with the target enemy while all the others continue to behave normally.
+- **Distance:** Replaced the `distance` variable. Distance is now tracked separately for all enemies using their new `dist` property. Only `target_en.dist` is used for clock and combat logic.
+
 ### [v0.19.1] - *2026-06-27*
-#### Changed:
-**Color:** Palette tweaks to contribute to the dark atmosphere and make flash lighting more consistent.
-**Takedowns:** Added rainstop effect to more takedown frames.
+#### Changed
+- **Color:** Palette tweaks to contribute to the dark atmosphere and make flash lighting more consistent.
+- **Takedowns:** Added rainstop effect to more takedown frames.
 
 ### [v0.19.0] - *2026-06-26*
-#### Changed:
+#### Changed
 - **Enemies:** Refactored many systems to stop relying on a hardcoded enemy. They now have guards in place to stop crashes when no enemy exists.
 - **Sprites:** Edited a frame in the `double_chest` animation.
 - **Takedowns:** Tweaked frame timing of the `double_chest` takedown animation again.
@@ -29,7 +38,7 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 ### [v0.18.1] - *2026-06-25*
 #### Added
 - **Sprites:** New frame drawn for the `parry_leg` takedown to better match the fluidity of the `double_chest` takedown.
-#### Changed:
+#### Changed
 - **Takedowns:** Tweaked frame timing of both the `parry_leg` and `double_chest` takedown animations.
 
 ### [v0.18.0] - *2026-06-24*
