@@ -29,7 +29,7 @@ __lua__
     --enemy animations
     walk = {4,2,6,2}
     punch = {8,8,10,10,10,10,10}
-    
+
     function _init()
         game = "play"
         debug = true
@@ -177,6 +177,12 @@ __lua__
             end
         end
 
+        if plr.state == "idle" then
+            plr.w = 2
+            plr.h = 3
+            plr.spr = 0
+        end
+
     end
 
     function draw_player()
@@ -195,16 +201,15 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(108,90,2,3,1,0.2)
+            en = make_en(135,90,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(118,90,2,3,1,0.2)
+            en = make_en(-8,90,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(128,90,2,3,1,0.2)
+            en = make_en(119,90,2,3,1,0.2)
             add(enemies,en)
         end
 
         if #enemies > 0 then
-            target_en = enemies[1]
             for en in all(enemies) do
                 en.cent = en.x+7
                 en.dist = abs(flr(plr.cent)-flr(en.cent))
@@ -224,8 +229,18 @@ __lua__
                     en.fx    = true
                 end
             end
+            if target_en == nil then
+                local min_dist = 999
+                for en in all(enemies) do
+                    if en.state != "dead" then
+                        if en.dist <= min_dist then
+                            min_dist = en.dist
+                            target_en = en
+                        end
+                    end
+                end
+            end
         end
-    
     end
 
     function draw_enemies()
@@ -261,11 +276,12 @@ __lua__
         takedown_pool={
             "parry_leg",
             "double_chest",
-            "test",
+            --"test",
         }
 
         takedowns={
             parry_leg={
+                length=78,
                 key_frames={
                     [01] = {
                         spr=48,
@@ -310,6 +326,7 @@ __lua__
                 }
             },
             double_chest={
+                length=86,
                 key_frames={
                     [01] = {
                         spr=96,
@@ -365,6 +382,7 @@ __lua__
                 }
             },
             test={
+                length=86,
                 key_frames={
                     [01] = {
                         spr=96,
@@ -439,7 +457,7 @@ __lua__
                 target_en.ani = walk
             end
 
-            --player counter
+        --player counter
             if btn(5) then
                 counter = true
             end
@@ -457,6 +475,7 @@ __lua__
             if plr.state == "combat" then
                 cframe += gt
                 takedown()
+                counter = false
             else
                 cframe = 0
             end
@@ -499,10 +518,19 @@ __lua__
             if kf.rstop != nil then
                 rainstop = kf.rstop
             end
-
         end
-        if cframe >= 1 then
+
+        if c >= 1 then
             target_en.state = "dead"
+        end
+        if c == sequence.length then
+            plr.state = "idle"
+            for en in all(enemies) do
+                if en.state == "dead" then
+                    del(enemies,en)
+                    target_en = nil
+                end
+            end
         end
     end
 
