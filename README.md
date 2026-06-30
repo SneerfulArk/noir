@@ -15,6 +15,15 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.21.0] - *2026-06-29*
+#### Added
+- **Player:** `"idle"` state logic setting the players width, height, and sprite.
+- **Enemies:** Target enemy selection is now based on each enemies distance property `en.dist`.
+- **Takedowns:** New `length` property added to each takedown sequence. Corresponds to the final keyframe.
+- **Combat:** New target enemy is chosen when the original is deleted, and three new enemies are spawned once the enemy table is empty. This allows the player to do takedowns infinitely.
+#### Changed
+- **Enemies:** Edited enemy starting positions for testing new target picking logic.
+
 ### [v0.20.0] - *2026-06-28*
 #### Added
 - **Enemies:** The system now supports any number of enemies at once. If multiple enemies exist, new logic is in place to pick the first index in the `enemies` table to be the `target_en` for combat.
