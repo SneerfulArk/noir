@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.22.0] - *2026-07-01*
+#### Added
+- **Enemies:** Functions `make_body()` & `draw_body()`, and the `bodies` global table added for persistent enemy corpse spawning and tracking upon the completion of a takedown.
+- **Takedowns:** Each takedown now has its own `body_spr` property to ensure the correct sprite is selected for the subsequently spawned corpse.
+
 ### [v0.21.0] - *2026-06-29*
 #### Added
 - **Player:** `"idle"` state logic setting the players width, height, and sprite.
