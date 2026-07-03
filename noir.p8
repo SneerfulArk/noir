@@ -111,7 +111,7 @@ __lua__
     end
 
     function update_clock()
-        time_elapsed += (1*gt)
+        time_elapsed += gt
 
         --time slow
         if btnp(4) then
@@ -195,7 +195,6 @@ __lua__
 
     function init_enemies()
         enemies = {}
-        bodies = {}
         corpses = {}
         target_en = nil
     end
@@ -203,10 +202,10 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(135,90,2,3,1,0.2)
-            add(enemies,en)
-            en = make_en(-8,90,2,3,1,0.2)
-            add(enemies,en)
+            --en = make_en(135,90,2,3,1,0.2)
+            --add(enemies,en)
+            --en = make_en(-8,90,2,3,1,0.2)
+            --add(enemies,en)
             en = make_en(119,90,2,3,1,0.2)
             add(enemies,en)
         end
@@ -243,14 +242,33 @@ __lua__
                 end
             end
         end
-        if #bodies > 0 then
-            for body in all(bodies) do
-                if body.facing == 1 then
-                    body.fx = false
-                elseif body.facing == 0 then
-                    body.fx = true
-                end 
-            end 
+    end
+
+    function update_corpses()
+        if #corpses > 0 then
+            for corpse in all(corpses) do
+                corpse.delay -= 1*gt
+                if corpse.delay == 0 then
+                    if #corpse.list > 0 then
+                        local rnd_index = flr(rnd(#corpse.list-1)+1)
+                        local target_pixel = corpse.list[rnd_index]
+                        target_pixel.dust = true
+                        corpse.delay = 1
+                        deli(corpse.list,rnd_index)
+                    end
+                end
+                
+                for p in all(corpse.pixels) do
+                    if p.dust == true then
+                        p.x += p.vx*gt
+                        p.y -= p.vy*gt
+                        p.life -= 1
+                        if p.life <= 0 then
+                            del(corpse.pixels,p)
+                        end
+                    end
+                end
+            end
         end
     end
 
@@ -263,11 +281,6 @@ __lua__
                     reset_draw_pal()
                 end
                 draw_obj(en)
-            end
-        end
-        if #bodies > 0 then
-            for body in all(bodies) do
-                draw_body(body)
             end
         end
         if #corpses > 0 then
@@ -549,8 +562,6 @@ __lua__
         end
         if c == sequence.length then
             plr.state = "idle"
-            --[[ body = make_body(plr.cent,plr.y+16,3,1,sequence.body_spr,plr.facing)
-            add(bodies,body) ]]
             local offset
             if plr.facing == 1 then offset = 5
             elseif plr.facing == 0 then offset = -5 end
@@ -668,25 +679,15 @@ __lua__
         return en
     end
 
-    function make_body(body_x,body_y,body_w,body_h,body_spr,body_facing)
-        local body={}
-            body.x      = body_x
-            body.y      = body_y
-            body.w      = body_w or 3
-            body.h      = body_h or 1
-            body.facing = body_facing or 1
-            body.fx     = false
-            body.spr    = body_spr or 240
-            body.body   = true
-        return body
-    end
-
     function make_corpse(corpse_x,corpse_y,corpse_facing)
         local corpse={}
-            corpse.x      = corpse_x
-            corpse.y      = corpse_y
-            corpse.facing = corpse_facing
-            corpse.pixels = {
+            corpse.x       = corpse_x
+            corpse.y       = corpse_y
+            corpse.facing  = corpse_facing
+            corpse.delay   = 45
+            corpse.pixels  = {}
+            corpse.list    = {}
+            local template = {
                 {03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,02,03,03,03},
                 {03,03,03,03,03,03,04,02,04,02,02,04,02,03,03,03,02,04,03,03},
                 {03,03,03,03,03,02,15,15,15,08,00,00,00,00,00,00,02,04,02,02},
@@ -695,24 +696,38 @@ __lua__
                 {00,00,00,14,00,02,02,02,02,02,02,02,02,00,00,00,02,04,02,02},
                 {00,00,08,00,00,00,02,02,02,02,02,02,02,00,00,08,02,04,02,03}
             }
+            for row=1,#template do
+                for column=1,#template[row] do
+                    local clr = template[row][column]
+                    if clr != 3 then
+                        local px, py
+                        if corpse.facing == 1 then
+                            px = corpse.x + (column-1)
+                            py = corpse.y + (row-1)
+                        elseif corpse.facing == 0 then
+                            px = corpse.x - (column-1)
+                            py = corpse.y + (row-1)
+                        end
+                        local new_pixel = {
+                            x    = px,
+                            y    = py,
+                            clr  = clr,
+                            vx   = rnd(0.5)+0.1,
+                            vy   = rnd(0.1)+0.1,
+                            dust = false,
+                            life = 60
+                        }
+                    add(corpse.pixels,new_pixel)
+                    add(corpse.list,new_pixel)
+                    end
+                end
+            end
         return corpse
     end
 
     function draw_corpse(corpse)
-        local cx = corpse.x
-        local cy = corpse.y
-        local facing = corpse.facing
-        for row=1,7 do
-            for column=1,20 do
-                local clr = corpse.pixels[row][column]
-                if clr != 3 then
-                    if facing == 1 then
-                        pset(cx+(column-1), cy+(row-1), clr)
-                    elseif facing == 0 then
-                        pset(cx-(column-1), cy+(row-1), clr)
-                    end
-                end
-            end
+        for p in all(corpse.pixels) do
+            pset(p.x,p.y,p.clr)
         end
     end
 
@@ -748,16 +763,6 @@ __lua__
         if obj.state != "dead" then
             spr(obj.spr,obj.x-offset,obj.y,obj.w,obj.h,obj.fx)
         end
-    end
- 
-    function draw_body(body)
-        local offset = 0
-        if body.facing == 0 then
-            offset = 25
-        elseif body.facing == 1 then
-            offset = -2
-        end
-        spr(body.spr,body.x-offset,body.y,body.w,body.h,body.fx)
     end
 
     function doshake()
@@ -801,6 +806,7 @@ __lua__
         update_clock()
         update_player()
         update_enemies()
+        update_corpses()
         update_combat()
         update_vfx()
     end
