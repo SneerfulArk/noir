@@ -15,6 +15,14 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.24.0] - *2026-07-03*
+#### Added
+- **Corpses:** Corpse disintigration/dusting effect controlled by the new `update_corpses()` function.
+#### Changes
+- **Corpses:** `make_corpse()` function tweaked to give each corpse pixel more properties like coordinates, life, and velocity.
+#### Removed
+- **Bodies:** `make_body()` & `draw_body()` replaced with corpse equivalents.
+
 ### [v0.23.0] - *2026-07-02*
 #### Added
 - **Corpses:** Functions `make_corpse()` & `draw_corpse()`, and `corpses` global table. These are meant to replace the body equivalents from [v0.22.0]. Draws the entire object using an array of pixel coordinates. This will allow a disintigration/dusting effect for cleaning up dead enemies.
