@@ -196,6 +196,7 @@ __lua__
     function init_enemies()
         enemies = {}
         bodies = {}
+        corpses = {}
         target_en = nil
     end
 
@@ -267,6 +268,11 @@ __lua__
         if #bodies > 0 then
             for body in all(bodies) do
                 draw_body(body)
+            end
+        end
+        if #corpses > 0 then
+            for corpse in all(corpses) do
+                draw_corpse(corpse)
             end
         end
     end
@@ -543,8 +549,13 @@ __lua__
         end
         if c == sequence.length then
             plr.state = "idle"
-            body = make_body(plr.cent,plr.y+16,3,1,sequence.body_spr,plr.facing)
-            add(bodies,body)
+            --[[ body = make_body(plr.cent,plr.y+16,3,1,sequence.body_spr,plr.facing)
+            add(bodies,body) ]]
+            local offset
+            if plr.facing == 1 then offset = 5
+            elseif plr.facing == 0 then offset = -5 end
+            corpse = make_corpse(plr.cent+offset,plr.y+16,plr.facing)
+            add(corpses,corpse)
             for en in all(enemies) do
                 if en.state == "dead" then
                     del(enemies,en)
@@ -668,6 +679,41 @@ __lua__
             body.spr    = body_spr or 240
             body.body   = true
         return body
+    end
+
+    function make_corpse(corpse_x,corpse_y,corpse_facing)
+        local corpse={}
+            corpse.x      = corpse_x
+            corpse.y      = corpse_y
+            corpse.facing = corpse_facing
+            corpse.pixels = {
+                {03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,03,02,03,03,03},
+                {03,03,03,03,03,03,04,02,04,02,02,04,02,03,03,03,02,04,03,03},
+                {03,03,03,03,03,02,15,15,15,08,00,00,00,00,00,00,02,04,02,02},
+                {00,00,00,00,00,15,15,15,00,00,15,15,15,00,00,14,02,04,02,02},
+                {00,00,00,00,00,04,02,04,02,02,04,02,08,00,00,00,02,04,02,02},
+                {00,00,00,14,00,02,02,02,02,02,02,02,02,00,00,00,02,04,02,02},
+                {00,00,08,00,00,00,02,02,02,02,02,02,02,00,00,08,02,04,02,03}
+            }
+        return corpse
+    end
+
+    function draw_corpse(corpse)
+        local cx = corpse.x
+        local cy = corpse.y
+        local facing = corpse.facing
+        for row=1,7 do
+            for column=1,20 do
+                local clr = corpse.pixels[row][column]
+                if clr != 3 then
+                    if facing == 1 then
+                        pset(cx+(column-1), cy+(row-1), clr)
+                    elseif facing == 0 then
+                        pset(cx-(column-1), cy+(row-1), clr)
+                    end
+                end
+            end
+        end
     end
 
     function move_obj(obj)
