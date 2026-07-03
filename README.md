@@ -15,6 +15,10 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.23.0] - *2026-07-02*
+#### Added
+- **Corpses:** Functions `make_corpse()` & `draw_corpse()`, and `corpses` global table. These are meant to replace the body equivalents from [v0.22.0]. Draws the entire object using an array of pixel coordinates. This will allow a disintigration/dusting effect for cleaning up dead enemies.
+
 ### [v0.22.0] - *2026-07-01*
 #### Added
 - **Enemies:** Functions `make_body()` & `draw_body()`, and the `bodies` global table added for persistent enemy corpse spawning and tracking upon the completion of a takedown.
