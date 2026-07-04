@@ -247,23 +247,44 @@ __lua__
     function update_corpses()
         if #corpses > 0 then
             for corpse in all(corpses) do
-                corpse.delay -= 1*gt
-                if corpse.delay == 0 then
+                corpse.delay -= gt
+                if corpse.delay <= 0 then
                     if #corpse.list > 0 then
                         local rnd_index = flr(rnd(#corpse.list-1)+1)
                         local target_pixel = corpse.list[rnd_index]
                         target_pixel.dust = true
                         corpse.delay = 1
-                        deli(corpse.list,rnd_index)
+                        deli(corpse.list,rnd_index) --delete chosen pixel from list
                     end
                 end
                 
                 for p in all(corpse.pixels) do
                     if p.dust == true then
+                        local rnd_clr = flr(rnd())+1
+                        local life = flr(p.life)
+                        --dust movement and life countdown
                         p.x += p.vx*gt
                         p.y -= p.vy*gt
-                        p.life -= 1
-                        if p.life <= 0 then
+                        p.life -= gt
+                        --randomized dust colour
+                        if life >= 75 then 
+                            if rnd_clr == 1 then
+                                p.clr = 4
+                            elseif rnd_clr == 2 then
+                                p.clr = 2
+                            end
+                        end
+                        --dust life colour cycle
+                        if life == 55 and p.clr == 2 then 
+                            p.clr = 0
+                        elseif life == 55 and p.clr == 4 then
+                            p.clr = 2
+                        end
+                        if life == 25 and p.clr == 2 then
+                            p.clr = 0
+                        end
+                        --dust deletion
+                        if life <= 0 then
                             del(corpse.pixels,p)
                         end
                     end
@@ -712,10 +733,10 @@ __lua__
                             x    = px,
                             y    = py,
                             clr  = clr,
-                            vx   = rnd(0.5)+0.1,
-                            vy   = rnd(0.1)+0.1,
+                            vx   = rnd(0.5)+0.2,
+                            vy   = rnd(0.05)+0.05,
                             dust = false,
-                            life = 60
+                            life = 75
                         }
                     add(corpse.pixels,new_pixel)
                     add(corpse.list,new_pixel)
