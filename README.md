@@ -15,6 +15,14 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.24.1] - *2026-07-03*
+#### Added
+- **Particles:** Corpse dust pixels are now coloured based on their life cycle, becoming darker the longer they've been in the `dust` state.
+#### Changed
+- **Corpses:** Tweaked starting velocity and lifespan of new pixels.
+#### Fixed
+- **Particles:** Corpse dust was being deleted at normal speeds even when game time was slowed down. Resolved by decrementing `p.life` by `gt` (game-time) rather than a hardcoded value.
+
 ### [v0.24.0] - *2026-07-03*
 #### Added
 - **Corpses:** Corpse disintigration/dusting effect controlled by the new `update_corpses()` function.
