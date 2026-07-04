@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.25.0] - *2026-07-04*
+#### Changed
+- **Corpses:** Refactored the `make_corpse()` function to generate particle arrays directly from the spritesheet using the native `sget()` function. Easier to add new corpse sprites, and no need to hardcode them.
+- **Takedowns:** Takedown property `body_spr` replaced with these four properties dictating spritesheet coordinates and sprite size: `spr_x`, `spr_y`, `spr_w` and `spr_h`.
+
 ### [v0.24.1] - *2026-07-03*
 #### Added
 - **Particles:** Corpse dust pixels are now coloured based on their life cycle, becoming darker the longer they've been in the `dust` state.
