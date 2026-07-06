@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.26.0] - *2026-07-05*
+#### Changed
+- **Palette:** Flash palette swap now utilizes the more dynamic draw palette rather than the global palette. This system now uses a new `flash_pal()` function and `pal_flash` table. It currently effects the player, as well as any enemies and corpses within a certain distance from the player.
+- **Takedowns:** Adjusted `flash` property in takedown sequence tables.
+
 ### [v0.25.0] - *2026-07-04*
 #### Changed
 - **Corpses:** Refactored the `make_corpse()` function to generate particle arrays directly from the spritesheet using the native `sget()` function. Easier to add new corpse sprites, and no need to hardcode them.
