@@ -7,7 +7,6 @@ __lua__
     --palette
     pal_global = {
         main = {
-        {0,  0},   --Black     to  Black
         {1,  0},   --Cobalt    to  Dark-Blue
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
@@ -16,14 +15,22 @@ __lua__
         {14, 136}, --Pink      to  Blood-Red
         {8,  2},   --Red       to  Dark-Red
         {11, 0},   --Red       to  Dark-Red
+        {9,  4},   --Orange    to  Brown
+        {12, 129}, --Light blue    to  dark blue
+        }
+    }
+    pal_flash = {
+        plr = {
+        {0,   2},
+        {2,   4},
+        {4,   9},
+        {15,  7},
         },
-        flash = {
-        {0,  5},   --Black     to  Dark-Grey
-        {1,  129}, --Cobalt    to  Dark-Blue
-        {2,  132}, --Bergundy  to  Choc-Brown
-        {15, 7},   --Beige     to  White
-        {4,  4},   --Brown     to  Brown
-        },
+        en = {
+        {0,   2},
+        {4,   9},
+        {15,  7},
+        }
     }
 
     --enemy animations
@@ -160,7 +167,6 @@ __lua__
     function update_player()
 
         plr.cent = plr.x+7
-
         if plr.facing == 1 then
             plr.fx = false
 
@@ -185,8 +191,9 @@ __lua__
     end
 
     function draw_player()
-        reset_draw_pal()
+        flash_pal(plr)
         draw_obj(plr)
+        reset_draw_pal()
     end
 
 
@@ -201,10 +208,10 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            --en = make_en(135,90,2,3,1,0.2)
-            --add(enemies,en)
-            --en = make_en(-8,90,2,3,1,0.2)
-            --add(enemies,en)
+            en = make_en(135,90,2,3,1,0.2)
+            add(enemies,en)
+            en = make_en(-8,90,2,3,1,0.2)
+            add(enemies,en)
             en = make_en(119,90,2,3,1,0.2)
             add(enemies,en)
         end
@@ -258,6 +265,7 @@ __lua__
                 end
                 
                 for p in all(corpse.pixels) do
+                    p.dist = abs(flr(plr.cent)-flr(p.x))
                     if p.dust == true then
                         local rnd_clr = flr(rnd())+1
                         local life = flr(p.life)
@@ -274,9 +282,9 @@ __lua__
                             end
                         end
                         --dust life colour cycle
-                        if life == 55 and p.clr == 2 then 
+                        if life == 60 and p.clr == 2 then
                             p.clr = 0
-                        elseif life == 55 and p.clr == 4 then
+                        elseif life == 60 and p.clr == 4 then
                             p.clr = 2
                         end
                         if life == 25 and p.clr == 2 then
@@ -295,17 +303,22 @@ __lua__
     function draw_enemies()
         if #enemies > 0 then
             for en in all(enemies) do
-                if en != target_en then
-                    pal(0,2)
-                elseif en == target_en then
-                    reset_draw_pal()
+                if en.dist <= 18 then
+                    flash_pal(en)
                 end
                 draw_obj(en)
+                reset_draw_pal()
             end
         end
         if #corpses > 0 then
             for corpse in all(corpses) do
+                for p in all(corpse.pixels) do
+                    if p.dist <= 18 then
+                        flash_pal(en)
+                    end
+                end
                 draw_corpse(corpse)
+                reset_draw_pal()
             end
         end
     end
@@ -355,7 +368,7 @@ __lua__
                         muz_offsetx=7,
                         muz_offsety=15,
                         sfx=1,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                     [26] = {
@@ -408,7 +421,7 @@ __lua__
                         muz_offsetx=2,
                         muz_offsety=12,
                         sfx=2,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                     [43] = {
@@ -419,7 +432,7 @@ __lua__
                         muz_offsetx=2,
                         muz_offsety=12,
                         sfx=1,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                     [53] = {
@@ -438,7 +451,7 @@ __lua__
                         muz_offsetx=8,
                         muz_offsety=13,
                         sfx=2,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                 }
@@ -468,7 +481,7 @@ __lua__
                         muz_offsetx=2,
                         muz_offsety=12,
                         sfx=2,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                     [43] = {
@@ -479,7 +492,7 @@ __lua__
                         muz_offsetx=2,
                         muz_offsety=12,
                         sfx=1,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                     [53] = {
@@ -498,7 +511,7 @@ __lua__
                         muz_offsetx=8,
                         muz_offsety=13,
                         sfx=2,
-                        flash=4,
+                        flash=3,
                         rstop=6,
                     },
                 }
@@ -677,13 +690,23 @@ __lua__
         palt(0,false)
         palt(3,true)
         local palette = pal_global.main
-        if flash >=1 then
-            palette = pal_global.flash
-        else
-            palette = pal_global.main
-        end
         for clr in all(palette) do
             pal(clr[1], clr[2], 1)
+        end
+    end
+    
+    function flash_pal(obj)
+        local palette
+        if obj == plr then
+            palette = pal_flash.plr
+        elseif obj == en then
+            palette = pal_flash.en
+        end
+
+        if flash >= 1 then
+            for clr in all(palette) do
+                pal(clr[1], clr[2])
+            end
         end
     end
 
@@ -719,13 +742,16 @@ __lua__
         local corpse={}
             corpse.x       = corpse_x
             corpse.y       = corpse_y
+            corpse.w       = spr_w
+            corpse.h       = spr_h
             corpse.facing  = corpse_facing
             corpse.delay   = 45
+            corpse.dist    = nil
             corpse.pixels  = {}
             corpse.list    = {}
 
-            for row=0,spr_h-1 do
-                for column=0,spr_w-1 do
+            for row=0,corpse.h-1 do
+                for column=0,corpse.w-1 do
                     local clr = sget(spr_x+column,spr_y+row)
                     if clr != 3 then
                         local px, py
@@ -743,7 +769,8 @@ __lua__
                             vx   = rnd(0.5)+0.2,
                             vy   = rnd(0.05)+0.05,
                             dust = false,
-                            life = 75
+                            life = 75,
+                            dist = 24
                         }
                     add(corpse.pixels,new_pixel)
                     add(corpse.list,new_pixel)
@@ -755,6 +782,7 @@ __lua__
 
     function draw_corpse(corpse)
         for p in all(corpse.pixels) do
+            flash_pal()
             pset(p.x,p.y,p.clr)
         end
     end
