@@ -15,6 +15,10 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.26.1] - *2026-07-06*
+#### Fixed
+- **Palette:** Flash palette swap wasnt triggering on the enemies because `en` was referring to both the enemy and the palette in the for loop. Resolved by swapping `en` for `pal_flash.en` and editing the `flash_pal()` function.
+
 ### [v0.26.0] - *2026-07-05*
 #### Changed
 - **Palette:** Flash palette swap now utilizes the more dynamic draw palette rather than the global palette. This system now uses a new `flash_pal()` function and `pal_flash` table. It currently effects the player, as well as any enemies and corpses within a certain distance from the player.
