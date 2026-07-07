@@ -106,7 +106,7 @@ __lua__
 
     function init_clock()
         ticks = 0
-        gt    = 1
+        gt = 1
         full_spd = 1
         time_slow = true
         time_elapsed = 0
@@ -191,7 +191,7 @@ __lua__
     end
 
     function draw_player()
-        flash_pal(plr)
+        flash_pal(pal_flash.plr)
         draw_obj(plr)
         reset_draw_pal()
     end
@@ -304,7 +304,7 @@ __lua__
         if #enemies > 0 then
             for en in all(enemies) do
                 if en.dist <= 18 then
-                    flash_pal(en)
+                    flash_pal(pal_flash.en)
                 end
                 draw_obj(en)
                 reset_draw_pal()
@@ -314,7 +314,7 @@ __lua__
             for corpse in all(corpses) do
                 for p in all(corpse.pixels) do
                     if p.dist <= 18 then
-                        flash_pal(en)
+                        flash_pal(pal_flash.en)
                     end
                 end
                 draw_corpse(corpse)
@@ -695,14 +695,7 @@ __lua__
         end
     end
     
-    function flash_pal(obj)
-        local palette
-        if obj == plr then
-            palette = pal_flash.plr
-        elseif obj == en then
-            palette = pal_flash.en
-        end
-
+    function flash_pal(palette)
         if flash >= 1 then
             for clr in all(palette) do
                 pal(clr[1], clr[2])
