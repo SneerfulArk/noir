@@ -220,6 +220,7 @@ __lua__
             for en in all(enemies) do
                 en.cent = en.x+7
                 en.dist = abs(flr(plr.cent)-flr(en.cent))
+                en.muz_dist = abs(flr(muz_x)-flr(en.cent))
                 if en.state == "dead" then
                     en.spd = 0
                 end
@@ -265,7 +266,7 @@ __lua__
                 end
                 
                 for p in all(corpse.pixels) do
-                    p.dist = abs(flr(plr.cent)-flr(p.x))
+                    p.muz_dist = abs(flr(muz_x)-flr(p.x))
                     if p.dust == true then
                         local rnd_clr = flr(rnd())+1
                         local life = flr(p.life)
@@ -303,7 +304,7 @@ __lua__
     function draw_enemies()
         if #enemies > 0 then
             for en in all(enemies) do
-                if en.dist <= 18 then
+                if en.muz_dist <= 18 then
                     flash_pal(pal_flash.en)
                 end
                 draw_obj(en)
@@ -313,7 +314,7 @@ __lua__
         if #corpses > 0 then
             for corpse in all(corpses) do
                 for p in all(corpse.pixels) do
-                    if p.dist <= 18 then
+                    if p.muz_dist <= 18 then
                         flash_pal(pal_flash.en)
                     end
                 end
@@ -763,7 +764,7 @@ __lua__
                             vy   = rnd(0.05)+0.05,
                             dust = false,
                             life = 75,
-                            dist = 24
+                            muz_dist = 18
                         }
                     add(corpse.pixels,new_pixel)
                     add(corpse.list,new_pixel)
@@ -775,7 +776,6 @@ __lua__
 
     function draw_corpse(corpse)
         for p in all(corpse.pixels) do
-            flash_pal()
             pset(p.x,p.y,p.clr)
         end
     end
