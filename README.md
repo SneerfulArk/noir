@@ -15,6 +15,10 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.26.2] - *2026-07-07*
+#### Changed
+- **Effect:** Palette flash effect for enemies and corpses now uses a threshold based on the `mux_x` variable rather than the players center variable `plr.cent`.
+
 ### [v0.26.1] - *2026-07-06*
 #### Fixed
 - **Palette:** Flash palette swap wasnt triggering on the enemies because `en` was referring to both the enemy and the palette in the for loop. Resolved by swapping `en` for `pal_flash.en` and editing the `flash_pal()` function.
