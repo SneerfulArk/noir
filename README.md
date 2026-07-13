@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.27.0] - *2026-07-12*
+#### Added
+- **Takedowns:** New `pistol_whip` takedown animation and table fully implemented.
+- **Takedowns:** `spr_offset` property added to each takedown table. This allows corpses to be spawned at varying distances tied to the specific takedown.
+#### Changed
+- **Draw:** `draw_obj()` function now supports sprites of 5 or 6 tiles in width.
+
 ### [v0.26.2] - *2026-07-07*
 #### Changed
 - **Effect:** Palette flash effect for enemies and corpses now uses a threshold based on the `mux_x` variable rather than the players center variable `plr.cent`.
