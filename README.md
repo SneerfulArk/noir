@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.28.0] - *2026-07-13*
+#### Added
+- **Background:** New section with `init_bg()`, `update_bg()`, and `draw_bg()` for distant buildings in the background. Also created a new `make_building()` function.
+- **Background:** Hardcoded buildings onto the sides of the screen to prepare for distant building art.
+#### Changed
+- **Takedowns:** Tweaked `pistol_whip` sprites and frame timing.
+
 ### [v0.27.0] - *2026-07-12*
 #### Added
 - **Takedowns:** New `pistol_whip` takedown animation and table fully implemented.
