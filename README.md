@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.29.0] - *2026-07-14*
+#### Added
+- **Background:** Placed the distant buildings and drew more side buildings for perspective.
+- **Background:** Lights on the distant buildings with randomized colours. Planning to make the lights flicker/change colour dynamically in the future.
+- **Background:** Randomized stars at the very front of the draw order (behind the distant buildings).
+
 ### [v0.28.0] - *2026-07-13*
 #### Added
 - **Background:** New section with `init_bg()`, `update_bg()`, and `draw_bg()` for distant buildings in the background. Also created a new `make_building()` function.
