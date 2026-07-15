@@ -39,7 +39,7 @@ __lua__
 
     function _init()
         game = "play"
-        debug = true
+        debug = false
         --sfx(3)
         init_clock()
         init_bg()
@@ -65,30 +65,6 @@ __lua__
         cls(0)
         doshake()
         apply_global_pal()
-
-        --sides & ground
-        rectfill(-1,94,128,128,5) --ground
-        for i=1,8 do --upper ground lines
-            line(-1,(93+2*i),128,(93+2*i),11)
-        end
-
-        line(31,-1,31,107,5) --left side lines
-        line(32,-1,32,102,5)
-        line(33,-1,33,97,5)
-        line(34,-1,34,93,5)
-        
-        line(96,-1,96,107,5) --right side lines
-        line(95,-1,95,102,5)
-        line(94,-1,94,97,5)
-        line(93,-1,93,93,5)
-
-        rectfill(-1,-1,30,128,5) --left
-        line(30,-1,30,110,0)
-        rectfill(97,-1,128,128,5) --right
-        line(97,-1,97,110,0)
-        for i=1,11 do --lower ground lines
-            line(-1,(109+2*i),128,(109+2*i),11)
-        end
 
         --state
         if game == "menu" then
@@ -698,8 +674,22 @@ __lua__
 --#region 7. BACKGROUND
 
     function init_bg()
+        stars = {}
+        for i=1,15 do
+            local star={}
+            star.x = 25+flr(rnd(77))
+            star.y = flr(rnd(55))
+            star.clr = 6
+            add(stars,star)
+        end
         buildings = {}
-        make_building(40,60,50,80)
+        make_building(40,57,45,68,4,3)
+        make_building(47,48,52,68,9,3)
+        make_building(53,54,59,68,5,3)
+        make_building(61,42,66,68,12,3)
+        make_building(68,52,73,68,5,3)
+        make_building(75,51,80,68,8,3)
+        make_building(81,53,86,68,6,3)
     end
 
     function update_bg()
@@ -708,10 +698,61 @@ __lua__
     end
 
     function draw_bg()
+        --stars
+        for star in all(stars) do
+            pset(star.x,star.y,star.clr)
+        end
+        --distant buildings
         if #buildings > 0 then 
             for b in all(buildings) do
                 rectfill(b.x0,b.y0,b.x1,b.y1,5)
+                for l in all(b.lights) do
+                    pset(l.x,l.y,l.clr)
+                end
             end
+        end
+        --close buildings & ground
+        rectfill(-1,70,128,128,5) --ground
+        for i=1,20 do --upper ground lines
+            line(-1,(111-2*i),128,(111-2*i),11)
+        end
+
+        line(40,20,40,70,0) --left side lines
+        line(41,21,41,70,5)
+        line(42,25,42,60,5)
+        
+        line(35,7,35,88,0)
+        line(36,7,36,88,0)
+        line(37,9,37,85,5)
+        line(38,12,38,80,5)
+        line(39,15,39,75,5)
+
+        line(31,-1,31,107,5)
+        line(32,1,32,102,5)
+        line(33,3,33,97,5)
+        line(34,6,34,93,5)
+        
+        line(87,19,87,70,0) --right side lines
+        line(86,20,86,70,5)
+        line(85,24,85,60,5)
+
+        line(92,12,92,88,0)
+        line(91,12,91,88,0)
+        line(90,14,90,85,5)
+        line(89,17,89,80,5)
+        line(88,20,88,75,5)
+
+        line(96,-1,96,107,5)
+        line(95,1,95,102,5)
+        line(94,3,94,97,5)
+        line(93,6,93,93,5)
+
+        rectfill(-1,-1,30,128,5) --left
+        line(30,-1,30,110,0)
+        rectfill(97,-1,128,128,5) --right
+        line(97,-1,97,110,0)
+        for i=1,11 do --lower ground lines
+            line(-1,(109+2*i),128,(109+2*i),11)
         end
     end
 
@@ -876,12 +917,31 @@ __lua__
         circfill(muz_x,muz_y,muzzle-1,7) --inner
     end
 
-    function make_building(x0,y0,x1,y1)
+    function make_building(x0,y0,x1,y1,lr,lc)
         local building={}
         building.x0 = x0
         building.y0 = y0
         building.x1 = x1
         building.y1 = y1
+        building.lights = {}
+        for row=0,lr-1 do
+            for column=0,lc-1  do
+                local light = {}
+                local rnd_clr = flr(rnd(4)+1)
+                light.x = building.x0+1+(column*2)
+                light.y = building.y0+1+(row*2)
+                if rnd_clr == 1 then
+                    light.clr = 7
+                elseif rnd_clr == 2 then
+                    light.clr = 10
+                elseif rnd_clr == 3 then
+                    light.clr = 10
+                elseif rnd_clr == 4 then
+                    light.clr = 0
+                end
+                add(building.lights,light)
+            end
+        end
         add(buildings,building)
     end
 
