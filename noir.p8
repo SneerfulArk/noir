@@ -7,16 +7,15 @@ __lua__
     --palette
     pal_global = {
         main = {
-        {1,  0},   --Cobalt    to  Dark-Blue
+        {1,  129}, --Cobalt    to  Dark-Blue
         {2,  128}, --Bergundy  to  Dark-Brown
         {15, 134}, --Beige     to  Dark-Beige
         {4,  133}, --Brown     to  Choc-Brown
         {10, 135}, --Yellow    to  Light-yellow
         {14, 136}, --Pink      to  Blood-Red
         {8,  2},   --Red       to  Dark-Red
-        {11, 0},   --Red       to  Dark-Red
         {9,  4},   --Orange    to  Brown
-        {12, 129}, --Light blue    to  dark blue
+        {12, 1},   --LightBlue to  Cobalt
         }
     }
     pal_flash = {
@@ -147,7 +146,7 @@ __lua__
     function init_player()
         plr={
             x      = 57,
-            y      = 92,
+            y      = 93,
             w      = 2,
             h      = 3,
             spr    = 0,
@@ -203,11 +202,11 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(135,92,2,3,1,0.2)
+            en = make_en(135,93,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(-8,92,2,3,1,0.2)
+            en = make_en(-8,93,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(119,92,2,3,1,0.2)
+            en = make_en(119,93,2,3,1,0.2)
             add(enemies,en)
         end
 
@@ -665,7 +664,7 @@ __lua__
         --rain
         for row in all (rain) do
             for drop in all (row.drops) do
-                line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),1)
+                line(flr(drop.x),flr(drop.y),flr(drop.x+drop.w),flr(drop.y+drop.h),0)
             end
         end
     end
@@ -683,17 +682,38 @@ __lua__
             add(stars,star)
         end
         buildings = {}
-        make_building(40,57,45,68,4,3)
-        make_building(47,48,52,68,9,3)
-        make_building(53,54,59,68,5,3)
-        make_building(61,42,66,68,12,3)
-        make_building(68,52,73,68,5,3)
-        make_building(75,51,80,68,8,3)
-        make_building(81,53,86,68,6,3)
+        make_building(40,58,45,69,4,3)
+        make_building(47,49,52,69,9,3)
+        make_building(53,55,59,69,5,3)
+        make_building(61,43,66,69,12,3)
+        make_building(68,53,73,69,5,3)
+        make_building(75,52,80,69,8,3)
+        make_building(81,54,86,69,6,3)
     end
 
     function update_bg()
         if #buildings > 0 then
+            for b in all(buildings) do
+                if flr(time_elapsed)%30 == 0 and gt > 0.5 then
+                    local rnd_light = flr(rnd(#b.lights)+1)
+                    local light = b.lights[rnd_light]
+                    local rnd_clr = flr(rnd(6)+1)
+                    local clr
+                    if rnd_clr == 1 then
+                        light.clr = 0
+                    elseif rnd_clr == 2 then
+                        light.clr = 1
+                    elseif rnd_clr == 3 then
+                        light.clr = 12
+                    elseif rnd_clr == 4 then
+                        light.clr = 10
+                    elseif rnd_clr == 5 then
+                        light.clr = 6
+                    elseif rnd_clr == 6 then
+                        light.clr = 7
+                    end
+                end
+            end
         end
     end
 
@@ -713,8 +733,10 @@ __lua__
         end
         --close buildings & ground
         rectfill(-1,70,128,128,5) --ground
-        for i=1,20 do --upper ground lines
-            line(-1,(111-2*i),128,(111-2*i),11)
+        rectfill(39,70,90,81,0)
+        for i=0,25 do --upper ground lines
+            line(64,70,64+(i*5),128,0)
+            line(64,70,64-(i*5),128,0)
         end
 
         line(40,20,40,70,0) --left side lines
@@ -747,13 +769,10 @@ __lua__
         line(94,3,94,97,5)
         line(93,6,93,93,5)
 
-        rectfill(-1,-1,30,128,5) --left
+        rectfill(-1,-1,30,109,5) --left
         line(30,-1,30,110,0)
-        rectfill(97,-1,128,128,5) --right
+        rectfill(97,-1,128,109,5) --right
         line(97,-1,97,110,0)
-        for i=1,11 do --lower ground lines
-            line(-1,(109+2*i),128,(109+2*i),11)
-        end
     end
 
 
@@ -924,22 +943,28 @@ __lua__
         building.x1 = x1
         building.y1 = y1
         building.lights = {}
+        building.lights_pool = {}
         for row=0,lr-1 do
             for column=0,lc-1  do
                 local light = {}
-                local rnd_clr = flr(rnd(4)+1)
+                local rnd_clr = flr(rnd(6)+1)
                 light.x = building.x0+1+(column*2)
                 light.y = building.y0+1+(row*2)
                 if rnd_clr == 1 then
-                    light.clr = 7
-                elseif rnd_clr == 2 then
-                    light.clr = 10
-                elseif rnd_clr == 3 then
-                    light.clr = 10
-                elseif rnd_clr == 4 then
                     light.clr = 0
+                elseif rnd_clr == 2 then
+                    light.clr = 1
+                elseif rnd_clr == 3 then
+                    light.clr = 12
+                elseif rnd_clr == 4 then
+                    light.clr = 10
+                elseif rnd_clr == 5 then
+                    light.clr = 6
+                elseif rnd_clr == 6 then
+                    light.clr = 7
                 end
                 add(building.lights,light)
+                add(building.lights_pool,light)
             end
         end
         add(buildings,building)
