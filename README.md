@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.30.0] - *2026-07-15*
+#### Added
+- **Background:** Distant lights now change colours to simulate people within the apartment buildings.
+#### Changed
+- **Background:** Changed ground line pattern to better portray perspective.
+
 ### [v0.29.0] - *2026-07-14*
 #### Added
 - **Background:** Placed the distant buildings and drew more side buildings for perspective.
