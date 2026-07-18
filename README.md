@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.31.0] - *2026-07-17*
+#### Added
+- **Enemies:** Logic to have non-target enemies stop and wait for their turn during combat. This makes the scene feel more choreographed and less chaotic overall.
+#### Changed
+- **Clock:** Tuned some variables like `slow_dist` and `stop_dist` to feel better with the new enemy waiting logic.
+- **Particles:** Red particles stay red now to make the dust more readable with the new ground pattern.
+
 ### [v0.30.0] - *2026-07-15*
 #### Added
 - **Background:** Distant lights now change colours to simulate people within the apartment buildings.
