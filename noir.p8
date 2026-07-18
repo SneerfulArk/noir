@@ -104,9 +104,9 @@ __lua__
         full_spd = 1
         time_slow = true
         time_elapsed = 0
-        slow_dist = 40
+        slow_dist = 37
         stop_dist = 12
-        slow_spd = 0.968
+        slow_spd = 0.960
         return_spd = 1.080
     end
 
@@ -202,11 +202,11 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(135,93,2,3,1,0.2)
+            en = make_en(160,93,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(-8,93,2,3,1,0.2)
+            en = make_en(-32,93,2,3,1,0.2)
             add(enemies,en)
-            en = make_en(119,93,2,3,1,0.2)
+            en = make_en(128,93,2,3,1,0.2)
             add(enemies,en)
         end
 
@@ -218,8 +218,15 @@ __lua__
                 if en.state == "dead" then
                     en.spd = 0
                 end
-                move_obj(en)
-                animate(en)
+                if en != target_en then --non targets stop and wait
+                    if en.dist >= 35 then
+                        move_obj(en)
+                        animate(en)
+                    end
+                elseif en == target_en then
+                    move_obj(en)
+                    animate(en)
+                end
                 if en.cent <=14 then
                     en.facing = 1
                     en.dx    = 1
@@ -269,7 +276,7 @@ __lua__
                         p.y -= p.vy*gt
                         p.life -= gt
                         --randomized dust colour
-                        if life >= 75 then 
+                        if life >= 75 and p.clr != 14 and p.clr != 8 then 
                             if rnd_clr == 1 then
                                 p.clr = 4
                             elseif rnd_clr == 2 then
@@ -285,6 +292,17 @@ __lua__
                         if life == 25 and p.clr == 2 then
                             p.clr = 0
                         end
+                        if life == 75 and p.clr == 14 then
+                            p.clr = 8
+                        end
+
+                        --[[if life >= 75 then 
+                            if p.clr == 14 then
+                                p.clr = 8
+                            elseif p.clr == 15 then
+                                p.clr = 4
+                            end
+                        end]]
                         --dust deletion
                         if life <= 0 then
                             del(corpse.pixels,p)
@@ -974,11 +992,16 @@ __lua__
 
     --menu state
     function update_menu()
+        update_clock()
+        update_bg()
         update_vfx()
         if btn(4) then game = "play" end
     end
 
     function draw_menu()
+        draw_bg()
+        draw_player()
+        draw_enemies()
         draw_vfx()
     end
 
