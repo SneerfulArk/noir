@@ -37,7 +37,7 @@ __lua__
     punch = {8,8,10,10,10,10,10}
 
     function _init()
-        game = "play"
+        game = "menu"
         debug = false
         --sfx(3)
         init_clock()
@@ -104,9 +104,9 @@ __lua__
         full_spd = 1
         time_slow = true
         time_elapsed = 0
-        slow_dist = 37
+        slow_dist = 30
         stop_dist = 12
-        slow_spd = 0.960
+        slow_spd = 0.945
         return_spd = 1.080
     end
 
@@ -114,13 +114,13 @@ __lua__
         time_elapsed += gt
 
         --time slow
-        if btnp(4) then
+        --[[if btnp(4) then
             if time_slow == false then
                 time_slow = true
             elseif time_slow == true then
                 time_slow = false
             end
-        end
+        end]]
         if target_en != nil then
             if time_slow==true and target_en.dist<=slow_dist then
                 gt *= slow_spd
@@ -219,7 +219,7 @@ __lua__
                     en.spd = 0
                 end
                 if en != target_en then --non targets stop and wait
-                    if en.dist >= 35 then
+                    if en.dist >= 33 then
                         move_obj(en)
                         animate(en)
                     end
@@ -295,14 +295,6 @@ __lua__
                         if life == 75 and p.clr == 14 then
                             p.clr = 8
                         end
-
-                        --[[if life >= 75 then 
-                            if p.clr == 14 then
-                                p.clr = 8
-                            elseif p.clr == 15 then
-                                p.clr = 4
-                            end
-                        end]]
                         --dust deletion
                         if life <= 0 then
                             del(corpse.pixels,p)
@@ -542,8 +534,9 @@ __lua__
             end
 
         --player counter
-            if btn(5) then
+            if btn(5) and target_en.dist <= 30 then
                 counter = true
+                time_slow = false
             end
             if target_en.dist == 11 and counter == true and plr.state != "combat" then
                 local rnd_index
@@ -623,6 +616,7 @@ __lua__
 
             corpse = make_corpse(plr.cent+offset,plr.y+17,plr.facing,sx,sy,sw,sh)
             add(corpses,corpse)
+            time_slow = true
 
             for en in all(enemies) do
                 if en.state == "dead" then
@@ -710,6 +704,20 @@ __lua__
     end
 
     function update_bg()
+        if #corpses <= 0 and game == "menu" then
+            corpse = make_corpse(60,plr.y,1,3,0,9,24,330)
+            add(corpses,corpse)
+            corpse = make_corpse(10,plr.y+23,1,52,121,20,7,60)
+            add(corpses,corpse)
+            corpse = make_corpse(55,plr.y+17,0,4,121,20,7,90)
+            add(corpses,corpse)
+            corpse = make_corpse(70,plr.y+26,1,28,121,20,7,120)
+            add(corpses,corpse)
+            corpse = make_corpse(95,plr.y+18,0,52,121,20,7,150)
+            add(corpses,corpse)
+            corpse = make_corpse(100,plr.y+22,1,4,121,20,7,180)
+            add(corpses,corpse)
+        end
         if #buildings > 0 then
             for b in all(buildings) do
                 if flr(time_elapsed)%30 == 0 and gt > 0.5 then
@@ -845,14 +853,14 @@ __lua__
         return en
     end
 
-    function make_corpse(corpse_x,corpse_y,corpse_facing,spr_x,spr_y,spr_w,spr_h)
+    function make_corpse(corpse_x,corpse_y,corpse_facing,spr_x,spr_y,spr_w,spr_h,corpse_delay)
         local corpse={}
             corpse.x       = corpse_x
             corpse.y       = corpse_y
             corpse.w       = spr_w
             corpse.h       = spr_h
             corpse.facing  = corpse_facing
-            corpse.delay   = 45
+            corpse.delay   = corpse_delay or 45
             corpse.dist    = nil
             corpse.pixels  = {}
             corpse.list    = {}
@@ -994,13 +1002,13 @@ __lua__
     function update_menu()
         update_clock()
         update_bg()
+        update_corpses()
         update_vfx()
-        if btn(4) then game = "play" end
+        if btn(5) then game = "play" end
     end
 
     function draw_menu()
         draw_bg()
-        draw_player()
         draw_enemies()
         draw_vfx()
     end
