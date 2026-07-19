@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.32.0] - *2026-07-18*
+#### Added
+- **Menu:** A bloody scene of the player character surrounded by corpses on the title-screen.
+#### Changed
+- **Clock:** Time-slow is now activated and deactivated according to the combat system.
+
 ### [v0.31.0] - *2026-07-17*
 #### Added
 - **Enemies:** Logic to have non-target enemies stop and wait for their turn during combat. This makes the scene feel more choreographed and less chaotic overall.
