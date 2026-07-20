@@ -15,6 +15,12 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.33.0] - *2026-07-19*
+#### Added
+- **Screen:** Black borders on the top and bottom of the screen, and camera position offset accordingly. Frames the game more like older movie.
+#### Changed
+- **Enemies:** New enemy will be spawned offscreen to replace one thats been killed. Their spawn position is relative to the direction the player character is facing.
+
 ### [v0.32.0] - *2026-07-18*
 #### Added
 - **Menu:** A bloody scene of the player character surrounded by corpses on the title-screen.
