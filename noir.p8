@@ -60,31 +60,32 @@ __lua__
     end
 
     function _draw()
-
         cls(0)
         doshake()
         apply_global_pal()
-
+        
         --state
         if game == "menu" then
             draw_menu()
         elseif game == "play" then
             draw_play()
         end
-
-        camera()
+        
+        --borders
+        rectfill(-2,-2,129,39,0)
+        rectfill(-2,167,129,125,0)
 
         --debug
         if debug == true then
-            print("ticks:"..ticks, 1, 1, 6)
-            print("time_elapsed:"..flr(time_elapsed), 1, 8, 6)
-            print("gt:"..gt, 1, 15, 6)
+            print("ticks:"..ticks, 1, 21, 6)
+            print("time_elapsed:"..flr(time_elapsed), 1, 27, 6)
+            print("gt:"..gt, 1, 33, 6)
+            cprint("NOIR", 120, 20, 6)
             if target_en != nil then
-                print("distance:"..target_en.dist, 1, 22, 6)
+                print("distance:"..target_en.dist, 1, 127, 6)
             end
-            cprint("NOIR", 120, 0, 6)
             if plr.state == "combat" then
-                print("cframe:"..flr(cframe), 1, 29, 6)
+                print("cframe:"..flr(cframe), 1, 133, 6)
             end
         end
         
@@ -114,13 +115,6 @@ __lua__
         time_elapsed += gt
 
         --time slow
-        --[[if btnp(4) then
-            if time_slow == false then
-                time_slow = true
-            elseif time_slow == true then
-                time_slow = false
-            end
-        end]]
         if target_en != nil then
             if time_slow==true and target_en.dist<=slow_dist then
                 gt *= slow_spd
@@ -202,12 +196,18 @@ __lua__
     function update_enemies()
         
         if #enemies <= 0 then
-            en = make_en(160,93,2,3,1,0.2)
-            add(enemies,en)
-            en = make_en(-32,93,2,3,1,0.2)
+            en = make_en(-14,93,2,3,1,0.2)
             add(enemies,en)
             en = make_en(128,93,2,3,1,0.2)
             add(enemies,en)
+        elseif #enemies < 2 then
+            if plr.facing == 0 then
+                en = make_en(-46,93,2,3,1,0.2)
+                add(enemies,en)
+            elseif plr.facing == 1 then
+                en = make_en(160,93,2,3,1,0.2)
+                add(enemies,en)
+            end
         end
 
         if #enemies > 0 then
@@ -219,7 +219,7 @@ __lua__
                     en.spd = 0
                 end
                 if en != target_en then --non targets stop and wait
-                    if en.dist >= 33 then
+                    if en.dist >= 30 then
                         move_obj(en)
                         animate(en)
                     end
@@ -291,6 +291,9 @@ __lua__
                         end
                         if life == 25 and p.clr == 2 then
                             p.clr = 0
+                        end
+                        if life == 40 and p.clr == 8 then
+                            p.clr = 2
                         end
                         if life == 75 and p.clr == 14 then
                             p.clr = 8
@@ -369,7 +372,7 @@ __lua__
                     [17] = {
                         spr=48,
                         sprw=3,
-                        shake=12,
+                        shake=11,
                         muzzle=3,
                         muz_offsetx=7,
                         muz_offsety=15,
@@ -384,7 +387,7 @@ __lua__
                     [71] = {
                         spr=51,
                         sprw=3,
-                        shake=13,
+                        shake=12,
                         muzzle=3,
                         muz_offsetx=7,
                         muz_offsety=9,
@@ -423,7 +426,7 @@ __lua__
                     [27] = {
                         spr=102,
                         sprw=3,
-                        shake=11,
+                        shake=10,
                         muzzle=3,
                         muz_offsetx=2,
                         muz_offsety=12,
@@ -434,7 +437,7 @@ __lua__
                     [43] = {
                         spr=102,
                         sprw=3,
-                        shake=11,
+                        shake=10,
                         muzzle=3,
                         muz_offsetx=2,
                         muz_offsety=12,
@@ -453,7 +456,7 @@ __lua__
                     [86] = {
                         spr=108,
                         sprw=4,
-                        shake=13,
+                        shake=12,
                         muzzle=3,
                         muz_offsetx=8,
                         muz_offsety=13,
@@ -492,7 +495,7 @@ __lua__
                     [38] = {
                         spr=147,
                         sprw=5,
-                        shake=11,
+                        shake=10,
                         muzzle=3,
                         muz_offsetx=9,
                         muz_offsety=12,
@@ -503,7 +506,7 @@ __lua__
                     [53] = {
                         spr=147,
                         sprw=5,
-                        shake=11,
+                        shake=10,
                         muzzle=3,
                         muz_offsetx=9,
                         muz_offsety=12,
@@ -686,10 +689,10 @@ __lua__
 
     function init_bg()
         stars = {}
-        for i=1,15 do
+        for i=1,7 do
             local star={}
-            star.x = 25+flr(rnd(77))
-            star.y = flr(rnd(55))
+            star.x = 30+flr(rnd(72))
+            star.y = flr(rnd(10))+40
             star.clr = 6
             add(stars,star)
         end
@@ -704,16 +707,23 @@ __lua__
     end
 
     function update_bg()
+        if btnp(4) then
+            if debug == false then
+                debug = true
+            elseif debug == true then
+                debug = false
+            end
+        end
         if #corpses <= 0 and game == "menu" then
             corpse = make_corpse(60,plr.y,1,3,0,9,24,330)
             add(corpses,corpse)
             corpse = make_corpse(10,plr.y+23,1,52,121,20,7,60)
             add(corpses,corpse)
-            corpse = make_corpse(55,plr.y+17,0,4,121,20,7,90)
+            corpse = make_corpse(55,plr.y+15,0,4,121,20,7,90)
             add(corpses,corpse)
-            corpse = make_corpse(70,plr.y+26,1,28,121,20,7,120)
+            corpse = make_corpse(70,plr.y+24,1,28,121,20,7,120)
             add(corpses,corpse)
-            corpse = make_corpse(95,plr.y+18,0,52,121,20,7,150)
+            corpse = make_corpse(95,plr.y+16,0,52,121,20,7,150)
             add(corpses,corpse)
             corpse = make_corpse(100,plr.y+22,1,4,121,20,7,180)
             add(corpses,corpse)
@@ -838,7 +848,7 @@ __lua__
             en.y      = en_y
             en.w      = en_w or 2
             en.h      = en_h or 3
-            en.spd    = en_spd or 1
+            en.spd    = en_spd or 0.7
             en.dx     = -1
             en.facing = 0
             en.cent   = en_x+7
@@ -942,7 +952,7 @@ __lua__
     function doshake()
 
         local shakex=rnd(shake)-(shake/2)
-        local shakey=rnd(shake)-(shake/2)
+        local shakey=rnd(shake)-(shake/2)+20
         
         camera(shakex,shakey)
         
