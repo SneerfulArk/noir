@@ -15,6 +15,11 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.34.0] - *2026-07-21*
+#### Added
+- **Takedowns:** The fourth and final takedown `gunned_down` has been fully implemented.
+- **Combat:** Takedowns are now less repetitive. New `second_last_takedown` variable ensures that any specific takedown cannot repeat until two others have already occurred.
+
 ### [v0.33.0] - *2026-07-19*
 #### Added
 - **Screen:** Black borders on the top and bottom of the screen, and camera position offset accordingly. Frames the game more like older movie.
