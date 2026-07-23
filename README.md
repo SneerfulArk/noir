@@ -15,6 +15,13 @@ It will be a cinematic power-trip in which the player character cannot be hurt. 
 - **Weapon:** Semi-Automatic sidearm for close-range gun-fu takedowns.
 
 ## CHANGELOG
+### [v0.35.0] - *2026-07-22*
+#### Added
+- **State:** "transition" state for moving between the "menu" and "play" states smoothly.
+- **Title:** "Cats & Dogs" sprite for the titlescreen. Implemented as a corpse to disintegrate alongside the player character before transitioning to the "play" state.
+#### Changed
+- **Corpses:** When all pixels in a corpse table are gone, the corpse will be deleted to clear space.
+
 ### [v0.34.0] - *2026-07-21*
 #### Added
 - **Takedowns:** The fourth and final takedown `gunned_down` has been fully implemented.
